@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,6 +17,8 @@ import com.trainticket.bean.Ticket;
 import com.trainticket.dao.StationDao;
 import com.trainticket.dao.UrlDao;
 import com.trainticket.service.TicketService;
+import com.trainticket.util.Configure;
+import com.trainticket.util.MyDate;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -32,46 +36,50 @@ public class TicketServiceImpl implements TicketService {
 	@Override
 	public JSONObject getTicket(String start,String end,String date1,String purpose){
 
-		Date date=new Date();//取时间
-	     Calendar calendar = new GregorianCalendar();
-	     calendar.setTime(date);
-	     calendar.add(calendar.DATE,1);//把日期往前减少一天，若想把日期向后推一天则将负数改为正数
-	     date=calendar.getTime(); 
-	     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-	     String dateString = formatter.format(date);
+	     String dateString = MyDate.getTomorrow();
 	     JSONObject jb =urlDao.getTicket(stationDao.getCode(start), stationDao.getCode(end), dateString, purpose);
 	     if(jb!=null){
-	    	 JSONArray j=jb.getJSONArray("messages");
-	    	 if(!j.isEmpty()){
+	    	 String status=jb.getString("status");
+	    	 if(status.equals("false")){
 	    		 jb=new JSONObject();
-		    	 jb.put("status", "false");
-		    	 jb.put("msg","非法请求");
+		    	 jb.put("retCode",Configure.ContentFaultCODE);
+		    	 jb.put("result","非法请求");
 		    	 return jb;
 	    	 }
 	    	 else{
-	    		 JSONObject jo=jb.getJSONObject("data");
-	    		 JSONArray result=jo.getJSONArray("result");
-	    		 List<String> data=new ArrayList<String>();
-	    		 for(int i=0;i<result.size();i++){
-	    			 data.add(result.getString(i));
-	    		 }
-	    		 List<Ticket> l1=getInf(data,date1);
-	    		 for(int i=0;i<l1.size();i++){
-	    			 Ticket t1=l1.get(i);
-	    			 JSONObject bb=urlDao.getTicketPrice(t1.getTcode(), t1.getRiqi(), t1.getSno()
-	    					 ,t1.getEno(),t1.getSeat());
-	    			 getPrice(t1,bb);
-	    		 }
-	    		 return getAllInf(l1);
+	    		 return parseInf(jb,date1);
 	    	 }
 	     }
 	     else{
 	    	 jb=new JSONObject();
-	    	 jb.put("status", "false");
-	    	 jb.put("msg","网络发生错误或服务器在维护");
+	    	 jb.put("retCode",Configure.DBFALSECODE );
+	    	 jb.put("result","网络发生错误或服务器在维护");
 	    	 return jb;
 	     }
+	
+	
+	}
+	     
+	private JSONObject parseInf(JSONObject jb,String date1){
+		JSONObject jo=jb.getJSONObject("data");
+		JSONObject map=jo.getJSONObject("map");
+		
+		 JSONArray result=jo.getJSONArray("result");
+		 List<String> data=new ArrayList<String>();
+		 for(int i=0;i<result.size();i++){
+			 data.add(result.getString(i));
+		 }
+		 List<Ticket> l1=getInf(data,date1,map);
+		 for(int i=0;i<l1.size();i++){
+			 Ticket t1=l1.get(i);
+			 JSONObject bb=urlDao.getTicketPrice(t1.getTcode(), t1.getRiqi(), t1.getSno()
+					 ,t1.getEno(),t1.getSeat());
+			 getPrice(t1,bb);
+		 }
+		 return getAllInf(l1);
+	 }
+	private String getName(JSONObject jo,String code){
+		return jo.getString(code);
 	}
 	private void getPrice(Ticket t, JSONObject j1){
 		if(j1!=null){
@@ -108,13 +116,12 @@ public class TicketServiceImpl implements TicketService {
 		for(int i=0;i<l.size();i++){
 			ja.add(l.get(i));
 		}
-		jb.put("data", ja);
-		jb.put("status", "true");
-		jb.put("msg", "ok");
+		jb.put("result", ja);
+		jb.put("retCode", Configure.ContentTrueCODE);
 		return jb;
 	}
 	
-	private List<Ticket> getInf(List<String> data,String date1){
+	private List<Ticket> getInf(List<String> data,String date1,JSONObject jo){
 		List<Ticket> l=new ArrayList<Ticket>();
 		for(int i=0;i<data.size();i++){
 			String[] d=data.get(i).split("\\|");
@@ -129,10 +136,10 @@ public class TicketServiceImpl implements TicketService {
 					t.setCode(d[n+k]);
 				}
 				if(k==5){
-					t.setStart(d[n+k]);
+					t.setStart(getName(jo,d[n+k]));
 				}
 				if(k==6){
-					t.setEnd(d[n+k]);
+					t.setEnd(getName(jo,d[n+k]));
 				}
 				if(k==7){
 					t.setStime(d[n+k]);

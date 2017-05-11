@@ -48,9 +48,9 @@ public class StationServiceImpl implements StationService {
 		}
 	}
 	
-	private JSONObject getJSONObject(JSONArray array,int code){
+	private JSONObject getJSONObject(JSONArray array,String code){
 		JSONObject ob = new JSONObject();
-		ob.put("code", code);
+		ob.put("retCode", code);
 		ob.put("result", array);
 		return ob;
 	}

@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.trainticket.bean.LoginUser;
+import com.trainticket.bean.ReigsterInf;
 import com.trainticket.bean.User;
+import com.trainticket.dao.ReigsterDao;
 import com.trainticket.dao.UserDao;
 import com.trainticket.service.UserService;
 import com.trainticket.util.Configure;
@@ -17,6 +19,11 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	@Qualifier("userDao")
 	private UserDao userDao;
+	@Autowired
+	@Qualifier("reigsterDao")
+	private ReigsterDao reigsterDao;
+	
+	
 	@Override
 	public JSONObject login(LoginUser user){
 		boolean result=userDao.login(user);
@@ -36,10 +43,27 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 	}
+	@Override
+	public JSONObject reigster(ReigsterInf user){
+		try{
+			if(reigsterDao.userNameExist(user.getUserName())){
+				return getJSONObject(Configure.NAMEEXISTCODE,new User());
+			}
+			else if(reigsterDao.passagerExist(user.getIdCode())){
+				return getJSONObject(Configure.USEREXISTCODE,new User());
+			}
+			else{
+				reigsterDao.reigster(user);
+				return getJSONObject(Configure.REIGSTERTRUECODE,new User());
+			}
+		}catch(Exception e){
+			return getJSONObject(Configure.DBFALSECODE,new User());
+		}
+	}
 	
-	private JSONObject getJSONObject(int code ,User user){
+	private JSONObject getJSONObject(String code ,User user){
 		JSONObject js=new JSONObject();
-		js.put("code", code);
+		js.put("retCode", code);
 		js.put("result", user);
 		return js;
 	}

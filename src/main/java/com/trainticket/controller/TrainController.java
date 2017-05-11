@@ -15,6 +15,7 @@ import com.trainticket.service.ApiService;
 import com.trainticket.service.ParseDataService;
 import com.trainticket.service.StationService;
 import com.trainticket.service.TicketService;
+import com.trainticket.util.MyDate;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -52,8 +53,7 @@ public class TrainController {
 	@RequestMapping(value="/queryByStationToStation",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public Object queryByStationToStation(String start,String end){
-		JSONObject object=apiService.queryByStationToStation(start, end);
-		return object.toString();
+		return ticketService.getTicket(start, end, MyDate.getTomorrow(), "ADULT").toString();
 	}
 	
 	@RequestMapping(value="/queryByTrainId",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
