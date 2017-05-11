@@ -5,19 +5,16 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.trainticket.bean.Train;
 import com.trainticket.service.ApiService;
 import com.trainticket.service.ParseDataService;
 import com.trainticket.service.StationService;
 import com.trainticket.service.TicketService;
 import com.trainticket.util.MyDate;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
