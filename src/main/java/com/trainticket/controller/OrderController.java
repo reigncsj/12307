@@ -29,7 +29,7 @@ public class OrderController {
 	@RequestMapping(value="/order",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public Object buildOrderTest1(String tcode,String start,String end,String date,String username,String uid,String type,String code){
-		OrderCommand o=new OrderCommand(tcode,start,end,MyDate.getTomorrow(),username,uid,type,code); 
+		OrderCommand o=new OrderCommand(tcode,start,end,date,username,uid,type,code); 
 		return orderService.buildOrder(o).toString();
 	}
 	@RequestMapping(value="/orderTest",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
