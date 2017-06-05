@@ -11,6 +11,7 @@ import com.trainticket.bean.OrderCommand;
 import com.trainticket.bean.QueryInf;
 import com.trainticket.bean.Ticket;
 import com.trainticket.dao.OrderDao;
+import com.trainticket.exception.ContentException;
 import com.trainticket.exception.DBException;
 import com.trainticket.service.OrderService;
 import com.trainticket.service.TicketService;
@@ -32,19 +33,24 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Override
 	public JSONObject buildOrder(OrderCommand order) {
-		List<Ticket> ticket=ticketService.getTicketInf(new QueryInf(order.getStart(),order.getEnd(),order.getDate()));
+		List<Ticket> ticket=null;
+		try {
+			ticket = ticketService.getTicketInf(new QueryInf(order.getStart(),order.getEnd(),order.getDate()));
+		} catch (ContentException e1) {
+			return JsonUtil.getJSONObject("日期不在预售期呢你", Configure.CONTENTFAULTCODE);
+		}
 		Ticket t=getTicketInf(ticket,order);
 		if(t==null){
-			return JsonUtil.getJSONObject("", Configure.DBFALSECODE);
+			return JsonUtil.getJSONObject("订单生成失败", Configure.DBFALSECODE);
 		}
 		else{
 			ticketService.getTicketPirce(t);
 			String content= t.getInf(order.getLtype());
 			if(content.equals("")||content.equals("无")){
-				return JsonUtil.getJSONObject("", Configure.NOTICKET);
+				return JsonUtil.getJSONObject("该趟车已售完", Configure.NOTICKET);
 			}
 			if(content.equals("维护")){
-				return JsonUtil.getJSONObject("", Configure.DBFALSECODE);
+				return JsonUtil.getJSONObject("系统维护中", Configure.DBFALSECODE);
 			}
 			else{
 				String location=buildLocation(order);
@@ -67,7 +73,7 @@ public class OrderServiceImpl implements OrderService{
 				try {
 					orderDao.insertOrder(orderInf);
 				} catch (DBException e) {
-					return JsonUtil.getJSONObject("", Configure.DBFALSECODE);
+					return JsonUtil.getJSONObject("订单生成失败", Configure.DBFALSECODE);
 				}
 				return JsonUtil.getJSONObject(Configure.GETTICKET,orderInf);
 			}
@@ -140,7 +146,7 @@ public class OrderServiceImpl implements OrderService{
 		try{
 			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getOrderByName(username));
 		}catch(Exception e){
-			return JsonUtil.getJSONObject("",Configure.DBFALSECODE);
+			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
 	}
 
@@ -149,7 +155,7 @@ public class OrderServiceImpl implements OrderService{
 		try{
 			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getOrderByNo(no));
 		}catch(Exception e){
-			return JsonUtil.getJSONObject("",Configure.DBFALSECODE);
+			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
 	}
 	

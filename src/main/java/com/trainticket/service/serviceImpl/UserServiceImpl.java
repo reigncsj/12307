@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 	public JSONObject login(LoginUser user){
 		boolean result=userDao.login(user);
 		if(!result){
-			return JsonUtil.getJSONObject(Configure.LOGINFALSECODE,""); 
+			return JsonUtil.getJSONObject(Configure.LOGINFALSECODE,"用户名不存在或密码错误"); 
 		}
 		else{
 			User user1=new User();
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 				user1.setTrueName(trueName);
 				return JsonUtil.getJSONObject(Configure.LOGINTRUECODE,user1);
 			}catch(Exception e){
-				return JsonUtil.getJSONObject("",Configure.DBFALSECODE);
+				return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 			}
 		}
 	}
@@ -49,17 +49,17 @@ public class UserServiceImpl implements UserService {
 	public JSONObject reigster(ReigsterInf user){
 		try{
 			if(reigsterDao.userNameExist(user.getUserName())){
-				return JsonUtil.getJSONObject("",Configure.NAMEEXISTCODE);
+				return JsonUtil.getJSONObject("用户名已存在",Configure.NAMEEXISTCODE);
 			}
 			else if(reigsterDao.passagerExist(user.getIdCode())){
-				return JsonUtil.getJSONObject("",Configure.USEREXISTCODE);
+				return JsonUtil.getJSONObject("该人已经被实名注册",Configure.USEREXISTCODE);
 			}
 			else{
 				reigsterDao.reigster(user);
-				return JsonUtil.getJSONObject("",Configure.REIGSTERTRUECODE);
+				return JsonUtil.getJSONObject("注册成功",Configure.REIGSTERTRUECODE);
 			}
 		}catch(Exception e){
-			return JsonUtil.getJSONObject("",Configure.DBFALSECODE);
+			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
 	}
 	@Override
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 			
 			return JsonUtil.getJSONObject(Configure.DBTURECODE,userDao.getUsual(username));
 		} catch (DBException e) {
-			return JsonUtil.getJSONObject("",Configure.DBFALSECODE);
+			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
 	}
 }

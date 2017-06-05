@@ -47,9 +47,9 @@ public class TransferInfServiceImpl implements TransferInfService {
 
 			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE, t1,t2);
 		} catch (ContentException e) {
-			return JsonUtil.getJSONObject("", Configure.CONTENTFAULTCODE);
+			return JsonUtil.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
 		} catch (Exception e) {
-			return JsonUtil.getJSONObject("", Configure.DBFALSECODE);
+			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 		} 
 
 		

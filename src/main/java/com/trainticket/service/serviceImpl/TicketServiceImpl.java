@@ -18,6 +18,7 @@ import com.trainticket.bean.Ticket;
 import com.trainticket.bean.TransferInf;
 import com.trainticket.dao.StationDao;
 import com.trainticket.dao.UrlDao;
+import com.trainticket.exception.ContentException;
 import com.trainticket.service.TicketService;
 import com.trainticket.util.Configure;
 import com.trainticket.util.JsonUtil;
@@ -37,36 +38,44 @@ public class TicketServiceImpl implements TicketService {
 	public StationDao stationDao;
 	
 	@Override
-	public JSONObject getTicket(QueryInf q){
+	public JSONObject getTicket(QueryInf q) {
 	     q.setStart(stationDao.getCode(q.getStart()));
 	     q.setEnd(stationDao.getCode(q.getEnd()));
 	     JSONObject jb =urlDao.getTicket(q);
 	     if(jb!=null){
 	    	 String status=jb.getString("status");
 	    	 if(status.equals("false")){
-	    		 return JsonUtil.getJSONObject("", Configure.CONTENTFAULTCODE);
+	    		 return JsonUtil.getJSONObject("请求内容有错误", Configure.CONTENTFAULTCODE);
 	    	 }
 	    	 else{
-	    		 return getAllInf(setPrice(parseInf(jb,q.getDate())));
+	    		 try{
+	    			 return getAllInf(setPrice(parseInf(jb,q.getDate())));
+	    		 }catch(Exception e){
+	    			 return JsonUtil.getJSONObject("请求内容有错误", Configure.CONTENTFAULTCODE);
+	    		 }
 	    	 }
 	     }
 	     else{
-	    	 return JsonUtil.getJSONObject("", Configure.DBFALSECODE);
+	    	 return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 	     }
 	}
 	     
-	private List<Ticket> parseInf(JSONObject jb,String date1){
-		JSONObject jo=jb.getJSONObject("data");
-		JSONObject map=jo.getJSONObject("map");
+	private List<Ticket> parseInf(JSONObject jb,String date1) throws ContentException{
+		try{
+			JSONObject jo=jb.getJSONObject("data");
+			JSONObject map=jo.getJSONObject("map");
 		
-		 JSONArray result=jo.getJSONArray("result");
-		 List<String> data=new ArrayList<String>();
-		 for(int i=0;i<result.size();i++){
-			 data.add(result.getString(i));
-		 }
-		 List<Ticket> l1=getInf(data,date1,map);
+			JSONArray result=jo.getJSONArray("result");
+			List<String> data=new ArrayList<String>();
+			for(int i=0;i<result.size();i++){
+				data.add(result.getString(i));
+			}
+			List<Ticket> l1=getInf(data,date1,map);
 		 
-		 return l1;
+			return l1;
+		}catch(Exception e){
+			throw new ContentException();
+		}
 	 }
 	private List<Ticket> setPrice( List<Ticket> l1)
 	{
@@ -206,7 +215,7 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	@Override
-	public List<Ticket> getTicketInf(QueryInf q) {
+	public List<Ticket> getTicketInf(QueryInf q) throws ContentException {
 		q.setStart(stationDao.getCode(q.getStart()));
 	     q.setEnd(stationDao.getCode(q.getEnd()));
 	     JSONObject jb =urlDao.getTicket(q);

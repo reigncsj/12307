@@ -28,36 +28,36 @@ public class TransferServiceImpl implements TransferService {
 	@Override
 	public JSONObject querySomeTransferStation(QueryInf q) {
 		if(q.getStart().equals(q.getEnd())){
-			return JsonUtil.getJSONObject("", Configure.CONTENTFAULTCODE);
+			return JsonUtil.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
 		}
 		setCityInf(q);
 		setCityStationInf(q);
 		if(isCommonCity(q)){
-			return JsonUtil.getJSONObject("", Configure.CITYSAMECODE);
+			return JsonUtil.getJSONObject("车站所在城市相同，中转不给予考虑", Configure.CITYSAMECODE);
 		}
 		try {
 			List<String> l=transferStationDao.queryTransferStation(q);
 			return JsonUtil.getJSONObject(Configure.DBTURECODE,l);
 		} catch (DBException e) {
-			return JsonUtil.getJSONObject("", Configure.DBFALSECODE);
+			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 		}
 	}
 
 	@Override
 	public JSONObject queryAllTransferStation(QueryInf q) {
 		if(q.getStart().equals(q.getEnd())){
-			return JsonUtil.getJSONObject("", Configure.CONTENTFAULTCODE);
+			return JsonUtil.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
 		}
 		setCityInf(q);
 		setCityStationInf(q);
 		if(isCommonCity(q)){
-			return JsonUtil.getJSONObject("", Configure.CITYSAMECODE);
+			return JsonUtil.getJSONObject("车站所在城市相同，中转不给予考虑", Configure.CITYSAMECODE);
 		}
 		try {
 			List<String> l=transferStationDao.queryAllTransferStation(q);
 			return JsonUtil.getJSONObject(Configure.DBTURECODE,l);
 		} catch (DBException e) {
-			return JsonUtil.getJSONObject("", Configure.DBFALSECODE);
+			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 		}
 	}
 	
@@ -77,17 +77,17 @@ public class TransferServiceImpl implements TransferService {
 	@Override
 	public JSONObject queryUsualTransferStation(QueryInf q) {
 		if(q.getStart().equals(q.getEnd())){
-			return JsonUtil.getJSONObject("", Configure.CONTENTFAULTCODE);
+			return JsonUtil.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
 		}
 		setCityInf(q);
 		if(isCommonCity(q)){
-			return JsonUtil.getJSONObject("", Configure.CITYSAMECODE);
+			return JsonUtil.getJSONObject("车站所在城市相同，中转不给予考虑", Configure.CITYSAMECODE);
 		}
 		try {
 			List<String> l=transferStationDao.queryUsualTransferStation(q);
 			return JsonUtil.getJSONObject(Configure.DBTURECODE,l);
 		} catch (DBException e) {
-			return JsonUtil.getJSONObject("", Configure.DBFALSECODE);
+			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 		}
 	}
 	

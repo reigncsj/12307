@@ -60,7 +60,7 @@ public class MyDate {
 			return new timeResult(1,1440+s-f);
 		}
 	}
-	private static int getMinuteNum(String min){
+	public static int getMinuteNum(String min){
 		String[] inf=min.split(":");
 		int hh=Integer.parseInt(inf[0]);
 		int mm=Integer.parseInt(inf[1]);
