@@ -20,6 +20,7 @@ public class UserController {
 	private UserService userService;
 	
 	
+	
 	@RequestMapping(value="/login",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public Object login1(String userName,String password){
@@ -37,6 +38,12 @@ public class UserController {
 	@ResponseBody
 	public Object login(@ModelAttribute("reigster")ReigsterInf inf){
 		return "";
+	}
+	
+	@RequestMapping(value="/passager",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public Object login(String username){
+		return userService.getPassager(username).toString();
 	}
 
 }

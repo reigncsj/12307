@@ -1,6 +1,5 @@
 package com.trainticket.dao.daoImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +58,31 @@ public class StationDaoImpl implements StationDao {
 			return "";
 		}
 	}
+
+	@Override
+	public List<String> getCommonCityStation(String tname) {
+		try{
+			List<String> l=(List<String>) template.queryForList("select TName from trainstation where City = (select City from trainstation where "
+					+ "TName = ? )",   
+				 new Object[]{tname}, String.class);
+			return l;
+		}catch(Exception e){
+			return null;
+		}
+	}
+
+	@Override
+	public String getCity(String tname) {
+		try{
+			List<String> l=(List<String>) template.queryForList("select City from trainstation where TName = ?",   
+				 new Object[]{tname}, String.class);
+			return l.get(0);
+		}catch(Exception e){
+			return tname;
+		}
+	}
+	
+	
 	
 	
 

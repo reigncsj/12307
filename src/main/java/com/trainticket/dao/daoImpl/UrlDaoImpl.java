@@ -18,6 +18,8 @@ import javax.net.ssl.X509TrustManager;
 
 import org.springframework.stereotype.Repository;
 
+import com.trainticket.bean.QueryInf;
+import com.trainticket.bean.Ticket;
 import com.trainticket.dao.UrlDao;
 
 import net.sf.json.JSONObject;
@@ -26,12 +28,12 @@ import net.sf.json.JSONObject;
 @Repository("urlDao")
 public class UrlDaoImpl implements UrlDao {
 	@Override
-	public JSONObject getTicket(String scode,String ecode,String date,String purpose){
+	public JSONObject getTicket(QueryInf q){
 		JSONObject jsonObject = null;
         StringBuffer buffer = new StringBuffer();
 		try{
-			String url1="https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date="+date+"&"
-					+ "leftTicketDTO.from_station="+scode+"&leftTicketDTO.to_station="+ecode+"&purpose_codes="+
+			String url1="https://kyfw.12306.cn/otn/leftTicket/query?leftTicketDTO.train_date="+q.getDate()+"&"
+					+ "leftTicketDTO.from_station="+q.getStart()+"&leftTicketDTO.to_station="+q.getEnd()+"&purpose_codes="+
 					//purpose;
 					"ADULT";
 			  SSLContext sc = SSLContext.getInstance("SSL");
@@ -69,12 +71,12 @@ public class UrlDaoImpl implements UrlDao {
 		return jsonObject;
 	}
 	@Override
-	public JSONObject getTicketPrice(String code,String date,String s,String e,String seat){
+	public JSONObject getTicketPrice(Ticket t){
 		JSONObject jsonObject = null;
         StringBuffer buffer = new StringBuffer();
 		try{
-			String url1="https://kyfw.12306.cn/otn/leftTicket/queryTicketPrice?train_no="+code
-					+ "&from_station_no="+s+"&to_station_no="+e+"&seat_types="+seat+"&train_date="+date ;  
+			String url1="https://kyfw.12306.cn/otn/leftTicket/queryTicketPrice?train_no="+t.getTcode()
+					+ "&from_station_no="+t.getSno()+"&to_station_no="+t.getEno()+"&seat_types="+t.getSeat()+"&train_date="+t.getRiqi() ;  
 			SSLContext sc = SSLContext.getInstance("SSL");
             sc.init(null, new TrustManager[] { new TrustAnyTrustManager() },
                      new java.security.SecureRandom());

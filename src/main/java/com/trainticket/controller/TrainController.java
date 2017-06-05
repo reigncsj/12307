@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.trainticket.bean.QueryInf;
 import com.trainticket.service.ApiService;
 import com.trainticket.service.ParseDataService;
 import com.trainticket.service.StationService;
 import com.trainticket.service.TicketService;
+import com.trainticket.service.TransferService;
+import com.trainticket.util.Configure;
 import com.trainticket.util.MyDate;
 
 import net.sf.json.JSONObject;
@@ -32,6 +35,9 @@ public class TrainController {
 	@Autowired
 	@Qualifier("ticketService")
 	private TicketService ticketService;
+	@Autowired
+	@Qualifier("transferService")
+	private TransferService transferService;
 	
 	@RequestMapping(value="/station",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
@@ -50,7 +56,7 @@ public class TrainController {
 	@RequestMapping(value="/queryByStationToStation",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public Object queryByStationToStation(String start,String end){
-		return ticketService.getTicket(start, end, MyDate.getTomorrow(), "ADULT").toString();
+		return ticketService.getTicket(new QueryInf(start, end, MyDate.getTomorrow(), "ADULT")).toString();
 	}
 	
 	@RequestMapping(value="/queryByTrainId",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
@@ -63,7 +69,24 @@ public class TrainController {
 	@RequestMapping(value="/ticket",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public Object queryTicket(String start,String end,String date){
-		return ticketService.getTicket(start, end, date, "ADULT").toString();
+		return ticketService.getTicket(new QueryInf(start, end, MyDate.getTomorrow(), "ADULT")).toString();
+	}
+	
+	@RequestMapping(value="/querySomeTransferStation",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public Object querySomeTransferStation(String start,String end){
+		return transferService.querySomeTransferStation(new QueryInf(start,end,Configure.TRANSFERNUM)).toString();
+	}
+	@RequestMapping(value="/queryAllTransferStation",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public Object queryAllTransferStation(String start,String end){
+		return transferService.queryAllTransferStation(new QueryInf(start,end,Configure.TRANSFERNUM)).toString();
+	}
+	
+	@RequestMapping(value="/queryUsualTransferStation",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public Object queryUsualTransferStation(String start,String end){
+		return transferService.queryUsualTransferStation(new QueryInf(start,end,Configure.TRANSFERNUM)).toString();
 	}
 	
 }

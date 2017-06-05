@@ -9,8 +9,10 @@ import com.trainticket.bean.ReigsterInf;
 import com.trainticket.bean.User;
 import com.trainticket.dao.ReigsterDao;
 import com.trainticket.dao.UserDao;
+import com.trainticket.exception.DBException;
 import com.trainticket.service.UserService;
 import com.trainticket.util.Configure;
+import com.trainticket.util.JsonUtil;
 
 import net.sf.json.JSONObject;
 
@@ -28,18 +30,18 @@ public class UserServiceImpl implements UserService {
 	public JSONObject login(LoginUser user){
 		boolean result=userDao.login(user);
 		if(!result){
-			return getJSONObject(Configure.LOGINFALSECODE,new User()); 
+			return JsonUtil.getJSONObject(Configure.LOGINFALSECODE,""); 
 		}
 		else{
 			User user1=new User();
 			user1.setUserName(user.getUserName());
 			try{
-				int num=userDao.getPassagerNo(user.getUserName());
+				String num=userDao.getPassagerId(user.getUserName());
 				String trueName=userDao.getTrueName(num);
 				user1.setTrueName(trueName);
-				return getJSONObject(Configure.LOGINTRUECODE,user1);
+				return JsonUtil.getJSONObject(Configure.LOGINTRUECODE,user1);
 			}catch(Exception e){
-				return getJSONObject(Configure.DBFALSECODE,new User());
+				return JsonUtil.getJSONObject("",Configure.DBFALSECODE);
 			}
 		}
 	}
@@ -47,24 +49,26 @@ public class UserServiceImpl implements UserService {
 	public JSONObject reigster(ReigsterInf user){
 		try{
 			if(reigsterDao.userNameExist(user.getUserName())){
-				return getJSONObject(Configure.NAMEEXISTCODE,new User());
+				return JsonUtil.getJSONObject("",Configure.NAMEEXISTCODE);
 			}
 			else if(reigsterDao.passagerExist(user.getIdCode())){
-				return getJSONObject(Configure.USEREXISTCODE,new User());
+				return JsonUtil.getJSONObject("",Configure.USEREXISTCODE);
 			}
 			else{
 				reigsterDao.reigster(user);
-				return getJSONObject(Configure.REIGSTERTRUECODE,new User());
+				return JsonUtil.getJSONObject("",Configure.REIGSTERTRUECODE);
 			}
 		}catch(Exception e){
-			return getJSONObject(Configure.DBFALSECODE,new User());
+			return JsonUtil.getJSONObject("",Configure.DBFALSECODE);
 		}
 	}
-	
-	private JSONObject getJSONObject(String code ,User user){
-		JSONObject js=new JSONObject();
-		js.put("retCode", code);
-		js.put("result", user);
-		return js;
+	@Override
+	public JSONObject getPassager(String username) {
+		try {
+			
+			return JsonUtil.getJSONObject(Configure.DBTURECODE,userDao.getUsual(username));
+		} catch (DBException e) {
+			return JsonUtil.getJSONObject("",Configure.DBFALSECODE);
+		}
 	}
 }

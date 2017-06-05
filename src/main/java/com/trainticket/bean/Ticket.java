@@ -38,6 +38,54 @@ public class Ticket {
 	private	String eno="";
 	private String seat="";
 	
+	public String getInf(String content){
+		if(content.equals("sw"))
+			return sw;
+		else if(content.equals("swpj"))
+			return swpj;
+		else if(content.equals("yd"))
+			return yd;
+		else if(content.equals("ydpj"))
+			return ydpj;
+		else if(content.equals("ed"))
+			return ed;
+		else if(content.equals("edpj"))
+			return edpj;
+		else if(content.equals("td"))
+			return td;
+		else if(content.equals("tdpj"))
+			return tdpj;
+		else if(content.equals("gw"))
+			return gw;
+		else if(content.equals("gwpj"))
+			return gwpj;
+		else if(content.equals("rw"))
+			return rw;
+		else if(content.equals("rwpj"))
+			return rwpj; 
+		else if(content.equals("yw"))
+			return yw;
+		else if(content.equals("ywpj"))
+			return ywpj;
+		else if(content.equals("rz"))
+			return rz;
+		else if(content.equals("rzpj"))
+			return rzpj;
+		else if(content.equals("yz"))
+			return yz; 
+		else if(content.equals("yzpj"))
+			return yzpj;
+		else if(content.equals("wz"))
+			return wz;
+		else if(content.equals("wzpj"))
+			return wzpj;
+		else if(content.equals("qt"))
+			return qt;
+		else if(content.equals("qtpj"))
+			return qtpj;
+		else
+			return ""; 
+	}
 	public String getSeat() {
 		return seat;
 	}

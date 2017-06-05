@@ -1,46 +1,46 @@
 package com.trainticket.bean;
 
 public class Passager {
-	private String trueName;
-	private String type;
-	private String iType;
-	private String idCode;
+	private String Name;
+	private String Type;
+	private String Utype;
+	private String UCode;
 	
 	public Passager() {
 	}
-	public Passager(String trueName, String type, String iType, String idCode) {
-		this.trueName = trueName;
-		this.type = type;
-		this.iType = iType;
-		this.idCode = idCode;
+	public Passager(String Name, String Type, String Utype, String UCode) {
+		this.Name = Name;
+		this.Type = Type;
+		this.Utype = Utype;
+		this.UCode = UCode;
 	}
 	public Passager(String trueName, String type) {
-		this.trueName = trueName;
-		this.type = type;
+		this.Name = trueName;
+		this.Type = type;
 	}
-	public String getTrueName() {
-		return trueName;
+	public String getName() {
+		return Name;
 	}
-	public void setTrueName(String trueName) {
-		this.trueName = trueName;
+	public void setName(String trueName) {
+		this.Name = trueName;
 	}
 	public String getType() {
-		return type;
+		return Type;
 	}
 	public void setType(String type) {
-		this.type = type;
+		this.Type = type;
 	}
-	public String getiType() {
-		return iType;
+	public String getUType() {
+		return Utype;
 	}
-	public void setiType(String iType) {
-		this.iType = iType;
+	public void setUType(String iType) {
+		this.Utype = iType;
 	}
-	public String getIdCode() {
-		return idCode;
+	public String getUCode() {
+		return UCode;
 	}
-	public void setIdCode(String idCode) {
-		this.idCode = idCode;
+	public void setUCode(String idCode) {
+		this.UCode = idCode;
 	}
 
 }

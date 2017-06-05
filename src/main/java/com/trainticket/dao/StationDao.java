@@ -10,5 +10,6 @@ public interface StationDao {
 	public String getCode(String tname);
 	public List<String> getStationByPy(String station) throws DBException;
 	public String getNameByCode(String tname);
-	
+	public List<String> getCommonCityStation(String tname);
+	public String getCity(String tname);
 }

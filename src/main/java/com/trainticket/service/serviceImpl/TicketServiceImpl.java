@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.trainticket.bean.QueryInf;
 import com.trainticket.bean.Ticket;
+import com.trainticket.bean.TransferInf;
 import com.trainticket.dao.StationDao;
 import com.trainticket.dao.UrlDao;
 import com.trainticket.service.TicketService;
 import com.trainticket.util.Configure;
+import com.trainticket.util.JsonUtil;
 import com.trainticket.util.MyDate;
 
 import net.sf.json.JSONArray;
@@ -34,33 +37,25 @@ public class TicketServiceImpl implements TicketService {
 	public StationDao stationDao;
 	
 	@Override
-	public JSONObject getTicket(String start,String end,String date1,String purpose){
-
-	     String dateString = MyDate.getTomorrow();
-	     JSONObject jb =urlDao.getTicket(stationDao.getCode(start), stationDao.getCode(end), dateString, purpose);
+	public JSONObject getTicket(QueryInf q){
+	     q.setStart(stationDao.getCode(q.getStart()));
+	     q.setEnd(stationDao.getCode(q.getEnd()));
+	     JSONObject jb =urlDao.getTicket(q);
 	     if(jb!=null){
 	    	 String status=jb.getString("status");
 	    	 if(status.equals("false")){
-	    		 jb=new JSONObject();
-		    	 jb.put("retCode",Configure.ContentFaultCODE);
-		    	 jb.put("result","非法请求");
-		    	 return jb;
+	    		 return JsonUtil.getJSONObject("", Configure.CONTENTFAULTCODE);
 	    	 }
 	    	 else{
-	    		 return parseInf(jb,date1);
+	    		 return getAllInf(setPrice(parseInf(jb,q.getDate())));
 	    	 }
 	     }
 	     else{
-	    	 jb=new JSONObject();
-	    	 jb.put("retCode",Configure.DBFALSECODE );
-	    	 jb.put("result","网络发生错误或服务器在维护");
-	    	 return jb;
+	    	 return JsonUtil.getJSONObject("", Configure.DBFALSECODE);
 	     }
-	
-	
 	}
 	     
-	private JSONObject parseInf(JSONObject jb,String date1){
+	private List<Ticket> parseInf(JSONObject jb,String date1){
 		JSONObject jo=jb.getJSONObject("data");
 		JSONObject map=jo.getJSONObject("map");
 		
@@ -70,14 +65,18 @@ public class TicketServiceImpl implements TicketService {
 			 data.add(result.getString(i));
 		 }
 		 List<Ticket> l1=getInf(data,date1,map);
-		 for(int i=0;i<l1.size();i++){
+		 
+		 return l1;
+	 }
+	private List<Ticket> setPrice( List<Ticket> l1)
+	{
+		for(int i=0;i<l1.size();i++){
 			 Ticket t1=l1.get(i);
-			 JSONObject bb=urlDao.getTicketPrice(t1.getTcode(), t1.getRiqi(), t1.getSno()
-					 ,t1.getEno(),t1.getSeat());
+			 JSONObject bb=urlDao.getTicketPrice(t1);
 			 getPrice(t1,bb);
 		 }
-		 return getAllInf(l1);
-	 }
+		return l1;
+	}
 	private String getName(JSONObject jo,String code){
 		return jo.getString(code);
 	}
@@ -111,22 +110,22 @@ public class TicketServiceImpl implements TicketService {
 		}
 	}
 	private JSONObject getAllInf(List<Ticket> l){
-		JSONObject jb=new JSONObject();
 		JSONArray ja=new JSONArray();
 		for(int i=0;i<l.size();i++){
 			ja.add(l.get(i));
 		}
-		jb.put("result", ja);
-		jb.put("retCode", Configure.ContentTrueCODE);
-		return jb;
+		return JsonUtil.getJSONObject(ja, Configure.CONTENTTRUECODE);
 	}
 	
 	private List<Ticket> getInf(List<String> data,String date1,JSONObject jo){
 		List<Ticket> l=new ArrayList<Ticket>();
 		for(int i=0;i<data.size();i++){
+			boolean b=true;
 			String[] d=data.get(i).split("\\|");
 			int n=0;
-			for(;n<d.length&&!d[n].equals("预订");n++);
+			for(;n<d.length&&!d[n].equals("预订")&&!d[n].equals("23:00-06:00系统维护时间");n++);
+			if(d[n].equals("23:00-06:00系统维护时间"))
+				b=false;
 			Ticket t=new Ticket();
 			for(int k=0;(n+k)<d.length;k++){
 				if(k==1){
@@ -198,9 +197,39 @@ public class TicketServiceImpl implements TicketService {
 				if(d.length-n-k==14){
 					t.setGw(d[n+k]);
 				}
+				if(!b)
+					t.setYou("维护");
 			}
 			l.add(t);
 		}
 		return l;
 	}
+
+	@Override
+	public List<Ticket> getTicketInf(QueryInf q) {
+		q.setStart(stationDao.getCode(q.getStart()));
+	     q.setEnd(stationDao.getCode(q.getEnd()));
+	     JSONObject jb =urlDao.getTicket(q);
+	     if(jb!=null){
+	    	 String status=jb.getString("status");
+	    	 if(status.equals("false")){
+	    		 return new ArrayList<Ticket>();
+	    	 }
+	    	 else{
+	    		 return parseInf(jb,q.getDate());
+	    	 }
+	     }
+	     else{
+	    	 return new ArrayList<Ticket>();
+	     }
+	}
+
+	@Override
+	public void getTicketPirce(Ticket t) {
+		try{
+			JSONObject bb=urlDao.getTicketPrice(t);
+			getPrice(t,bb);
+		}catch(Exception e){	
+		}
+	}	
 }
