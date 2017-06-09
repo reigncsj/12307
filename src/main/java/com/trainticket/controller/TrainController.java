@@ -69,7 +69,13 @@ public class TrainController {
 	@RequestMapping(value="/ticket",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public Object queryTicket(String start,String end,String date){
-		return ticketService.getTicket(new QueryInf(start, end, MyDate.getTomorrow(), "ADULT")).toString();
+		return ticketService.getTicket(new QueryInf(start, end, date, "ADULT")).toString();
+	}
+	
+	@RequestMapping(value="/oneTicket",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public Object queryOneTicket(String start,String end,String date,String code){
+		return ticketService.getOneTicket(new QueryInf(start, end, date, "ADULT",code)).toString();
 	}
 	
 	@RequestMapping(value="/querySomeTransferStation",method=RequestMethod.GET,produces="text/html;charset=UTF-8")

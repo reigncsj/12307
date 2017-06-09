@@ -49,9 +49,15 @@ public class OrderController {
 	public Object getOrderByNo(String no){
 		return orderService.getOrderByNo(no).toString();
 	}
-	@RequestMapping(value="/payByNo",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@RequestMapping(value="/getUnPaidOrder",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public Object payByNo(String no){
-		return orderService.payOrder(no).toString();
+	public Object getUnPaidOrder(String username){
+		return orderService.getUnPaidOrder(username).toString();
+	}
+	
+	@RequestMapping(value="/getPaidOrder",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public Object getPaidOrder(String username){
+		return orderService.getPaidOrder(username).toString();
 	}
 }

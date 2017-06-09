@@ -24,9 +24,16 @@ public class TrainInfController {
 	
 	@RequestMapping(value="/queryTransferInf",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public Object queryFirstTransferInfTest(String start,String transfer,String end)
+	public Object queryTransferInf(String start,String transfer,String end)
 	{
 		return transferInfService.queryAllInf(new TransferInf(start,transfer,end)).toString();
+	}
+	
+	@RequestMapping(value="/queryTransfer",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public Object queryTransferInfTest(String start,String transfer,String end)
+	{
+		return transferInfService.queryTestInf(new TransferInf(start,transfer,end)).toString();
 	}
 	
 	@RequestMapping(value="/queryTransferInf",method=RequestMethod.POST,produces="text/html;charset=UTF-8")

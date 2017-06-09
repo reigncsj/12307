@@ -78,5 +78,27 @@ public class OrderDaoImpl implements OrderDao {
 		}
 	}
 
+	@Override
+	public List<Order> getUnPaidOrder(String name) throws DBException {
+		try{
+			String sql="select * from orderInf where Username = '"+name+"' and paid = 0";
+			return (List<Order>)template.query(sql, new BeanPropertyRowMapper(Order.class));
+		}
+		catch(Exception e){
+			throw new DBException();
+		}
+	}
+
+	@Override
+	public List<Order> getPaidOrder(String name) throws DBException {
+		try{
+			String sql="select * from orderInf where Username = '"+name+"' and paid = 1 ";
+			return (List<Order>)template.query(sql, new BeanPropertyRowMapper(Order.class));
+		}
+		catch(Exception e){
+			throw new DBException();
+		}
+	}
+
 
 }

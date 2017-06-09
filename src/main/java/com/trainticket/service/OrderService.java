@@ -9,4 +9,6 @@ public interface OrderService {
 	public JSONObject payOrder(String no);
 	public JSONObject getOrderByName(String username);
 	public JSONObject getOrderByNo(String no);
+	public JSONObject getUnPaidOrder(String name);
+	public JSONObject getPaidOrder(String name);
 }

@@ -14,4 +14,5 @@ public interface TicketService {
 	public JSONObject getTicket(QueryInf queryInf) ;
 	public List<Ticket> getTicketInf(QueryInf queryInf) throws ContentException;
 	public void getTicketPirce(Ticket t);
+	public JSONObject getOneTicket(QueryInf queryInf) ;
 }

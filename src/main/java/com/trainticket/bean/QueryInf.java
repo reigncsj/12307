@@ -8,6 +8,20 @@ public class QueryInf {
 	private String end;
 	private String date;
 	private String type;
+	private String code;
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public QueryInf(String start, String end, String date, String type, String code) {
+		this.start = start;
+		this.end = end;
+		this.date = date;
+		this.type = type;
+		this.code = code;
+	}
 	private String transfer;
 	private String startCity;
 	private String endCity;

@@ -7,24 +7,6 @@ public class Order extends OrderCommand {
 	private String location;
 	private String startTime;
 	private String endTime;
-	public String getStartTime() {
-		return startTime;
-	}
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
-	}
-	public String getEndTime() {
-		return endTime;
-	}
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
-	}
-	public String getLishi() {
-		return lishi;
-	}
-	public void setLishi(String lishi) {
-		this.lishi = lishi;
-	}
 	private String lishi;
 	public Order() {
 		super();
@@ -53,6 +35,23 @@ public class Order extends OrderCommand {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	public String getLishi() {
+		return lishi;
+	}
+	public void setLishi(String lishi) {
+		this.lishi = lishi;
+	}
 	
-
 }

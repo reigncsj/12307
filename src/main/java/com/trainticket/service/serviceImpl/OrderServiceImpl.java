@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService{
 				orderInf.settCode(order.gettCode());
 				orderInf.setUcode(order.getUcode());
 				orderInf.setUsername(order.getUsername());
-				orderInf.setType(order.getLtype());
+				orderInf.setLtype(order.getLtype());
 				orderInf.setLocation(location);
 				orderInf.setCode(order.getCode());
 				orderInf.setPaid("0");
@@ -154,6 +154,24 @@ public class OrderServiceImpl implements OrderService{
 	public JSONObject getOrderByNo(String no) {
 		try{
 			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getOrderByNo(no));
+		}catch(Exception e){
+			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
+		}
+	}
+
+	@Override
+	public JSONObject getUnPaidOrder(String name) {
+		try{
+			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getUnPaidOrder(name));
+		}catch(Exception e){
+			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
+		}
+	}
+
+	@Override
+	public JSONObject getPaidOrder(String name) {
+		try{
+			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getPaidOrder(name));
 		}catch(Exception e){
 			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
