@@ -11,6 +11,7 @@ import com.trainticket.bean.OrderCommand;
 import com.trainticket.bean.QueryInf;
 import com.trainticket.bean.Ticket;
 import com.trainticket.dao.OrderDao;
+import com.trainticket.dao.UserDao;
 import com.trainticket.exception.ContentException;
 import com.trainticket.exception.DBException;
 import com.trainticket.service.OrderService;
@@ -19,7 +20,9 @@ import com.trainticket.util.Configure;
 import com.trainticket.util.JsonUtil;
 import com.trainticket.util.MyDate;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.util.JSONUtils;
 
 @Service("orderService")
 public class OrderServiceImpl implements OrderService{
@@ -30,6 +33,9 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
 	@Qualifier("orderDao")
 	private OrderDao orderDao;
+	@Autowired
+	@Qualifier("userDao")
+	private UserDao userDao;
 	
 	@Override
 	public JSONObject buildOrder(OrderCommand order) {
@@ -37,7 +43,7 @@ public class OrderServiceImpl implements OrderService{
 		try {
 			ticket = ticketService.getTicketInf(new QueryInf(order.getStart(),order.getEnd(),order.getDate()));
 		} catch (ContentException e1) {
-			return JsonUtil.getJSONObject("日期不在预售期呢你", Configure.CONTENTFAULTCODE);
+			return JsonUtil.getJSONObject("订单生成失败", Configure.CONTENTFAULTCODE);
 		}
 		Ticket t=getTicketInf(ticket,order);
 		if(t==null){
@@ -70,6 +76,12 @@ public class OrderServiceImpl implements OrderService{
 				orderInf.setStartTime(t.getStime());
 				orderInf.setEndTime(t.getEtime());
 				orderInf.setLishi(t.getLishi());
+				if(orderInf.getPrice().equals(""))
+					return JsonUtil.getJSONObject("服务器忙，请稍后再试", Configure.DBFALSECODE);
+				try {
+					orderInf.setName(userDao.getTrueName(orderInf.getUcode()));
+				} catch (DBException e1) {
+				}
 				try {
 					orderDao.insertOrder(orderInf);
 				} catch (DBException e) {
@@ -79,7 +91,27 @@ public class OrderServiceImpl implements OrderService{
 			}
 		}
 	}
-	
+	@Override
+	public JSONObject buildOrder(OrderCommand order, OrderCommand order2) {
+		JSONObject jb=buildOrder(order);
+		if(!jb.getString("retCode").equals("1"))
+			return JsonUtil.getJSONObject("订单生成失败", Configure.DBFALSECODE);
+		else{
+			JSONObject content=jb.getJSONObject("result");
+			JSONObject jb2=buildOrder(order2);
+			if(!jb2.getString("retCode").equals("1")){
+				orderDao.deleteOrder(content.getString("orderNo"), content.getString("username"));
+				return JsonUtil.getJSONObject("订单生成失败", Configure.DBFALSECODE);
+			}
+			else{
+				JSONObject content2=jb2.getJSONObject("result");
+				JSONArray ja=new JSONArray();
+				ja.add(content);
+				ja.add(content2);
+				return JsonUtil.getJSONObject(Configure.GETTICKET,ja);
+			}
+		}
+	}
 	private Ticket getTicketInf(List<Ticket> ticket,OrderCommand order){
 		for(int i=0;i<ticket.size();i++){
 			if(ticket.get(i).getTcode().equals(order.gettCode()))
@@ -176,5 +208,7 @@ public class OrderServiceImpl implements OrderService{
 			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
 	}
+
+	
 	
 }

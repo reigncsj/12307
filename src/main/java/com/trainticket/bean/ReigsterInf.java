@@ -1,14 +1,15 @@
 package com.trainticket.bean;
 
+//注册信息汇总
 public class ReigsterInf {
-	private String userName;
-	private String password;
-	private String trueName;
-	private String phone;
-	private String email;
-	private String type;
-	private String iType;
-	private String idCode;
+	private String userName;//账户名
+	private String password;//密码
+	private String trueName;//真实姓名
+	private String phone;//手机号
+	private String email;//email
+	private String type;//票种
+	private String iType;//证件类型
+	private String idCode;//身份证号
 	public String getUserName() {
 		return userName;
 	}
@@ -28,6 +29,14 @@ public class ReigsterInf {
 		this.trueName = trueName;
 		this.phone = phone;
 		this.email = email;
+		this.type = type;
+		this.iType = iType;
+		this.idCode = idCode;
+	}
+	
+	public ReigsterInf(String userName, String trueName, String type, String iType, String idCode) {
+		this.userName = userName;
+		this.trueName = trueName;
 		this.type = type;
 		this.iType = iType;
 		this.idCode = idCode;

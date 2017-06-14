@@ -1,8 +1,9 @@
 package com.trainticket.bean;
 
+//用来接收登录请求信息
 public class LoginUser {
-	private String userName;
-	private String password;
+	private String userName;//用户名
+	private String password;//用户密码
 	public String getUserName() {
 		return userName;
 	}

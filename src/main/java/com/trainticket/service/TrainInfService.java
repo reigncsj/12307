@@ -1,5 +1,9 @@
 package com.trainticket.service;
 
-public interface TrainInfService {
+import com.trainticket.bean.QueryInf;
 
+import net.sf.json.JSONObject;
+
+public interface TrainInfService {
+	public JSONObject getLateInf(QueryInf q);
 }

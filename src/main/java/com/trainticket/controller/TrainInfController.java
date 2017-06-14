@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.trainticket.bean.QueryInf;
 import com.trainticket.bean.TransferInf;
-
+import com.trainticket.service.TrainInfService;
 import com.trainticket.service.TransferInfService;
 import com.trainticket.util.Configure;
 
@@ -20,25 +21,30 @@ public class TrainInfController {
 	@Autowired
 	@Qualifier("transferInfService")
 	private TransferInfService transferInfService;
+	@Autowired
+	@Qualifier("trainInfService")
+	private TrainInfService trainInfService;
 	
-	
-	@RequestMapping(value="/queryTransferInf",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	//获取正晚点路径
+	@RequestMapping(value="/queryLateInf",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public Object queryTransferInf(String start,String transfer,String end)
+	public Object queryLateInf(String station,String date,String code){
+		return trainInfService.getLateInf(new QueryInf(station,"",date,"",code)).toString();
+	}
+	
+	//获取中转第一趟车的数据
+	@RequestMapping(value="/queryFirstTransferInf",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public Object queryFirstTransferInf(String start,String transfer,String end,String date,int time)
 	{
-		return transferInfService.queryAllInf(new TransferInf(start,transfer,end)).toString();
+		return transferInfService.queryAllInf(new TransferInf(start,transfer,end,time,date)).toString();
 	}
-	
-	@RequestMapping(value="/queryTransfer",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	//获取中转第二趟车的数据
+	@RequestMapping(value="/querySecondTransferInf",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public Object queryTransferInfTest(String start,String transfer,String end)
+	public Object querySecondTransferInf(String start, String end,String date,String arrive,int time)
 	{
-		return transferInfService.queryTestInf(new TransferInf(start,transfer,end)).toString();
+		return transferInfService.querySecondInf(new TransferInf(start,arrive,end,time,date)).toString();
 	}
 	
-	@RequestMapping(value="/queryTransferInf",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
-	@ResponseBody
-	public Object queryFirstTransferInf(@ModelAttribute("inf")TransferInf inf){
-		return transferInfService.queryAllInf(inf).toString();
-	}
 }

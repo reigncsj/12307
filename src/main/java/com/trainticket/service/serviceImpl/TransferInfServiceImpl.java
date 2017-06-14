@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.trainticket.bean.QueryInf;
 import com.trainticket.bean.Ticket;
-import com.trainticket.bean.TransferDetailInf;
 import com.trainticket.bean.TransferInf;
 import com.trainticket.dao.InsertDao;
 import com.trainticket.dao.StationDao;
@@ -37,45 +36,50 @@ public class TransferInfServiceImpl implements TransferInfService {
 	public JSONObject queryAllInf(TransferInf t) {
 		QueryInf q=new QueryInf(t.getStart(),t.getEnd());
 		q.setTransfer(t.getTransfer());
-		QueryInf q1=new QueryInf(t.getStart(),t.getTransfer(),MyDate.getTomorrow(),"AUDIT");
-		QueryInf q2=new QueryInf(t.getTransfer(),t.getEnd(),MyDate.getTomorrow(),"AUDIT");
+		QueryInf q1=new QueryInf(t.getStart(),t.getTransfer(),t.getDate(),"AUDIT");
 		try {
 			q.setStartCity(stationDao.getCity(q.getStart()));
 			q.setEndCity(stationDao.getCity(q.getEnd()));
 			insertDao.insertSelect(q);
 			List<Ticket> t1=ticketService.getTicketInf(q1);
+			if(t1.size()==0)
+				return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
+			Ticket t3=t1.get(0);
+			String date2=MyDate.getArriveDate(t3.getRiqi(), t3.getStime(), t3.getLishi());
+			QueryInf q2=new QueryInf(t.getTransfer(),t.getEnd(),date2,"AUDIT");
 			List<Ticket> t2=ticketService.getTicketInf(q2);
-
-			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE, t1,t2);
+			QueryInf q3=new QueryInf(t.getTransfer(),t.getEnd(),MyDate.getDayAfter(1, date2),"AUDIT");
+			List<Ticket> t5=ticketService.getTicketInf(q3);
+			List<Ticket> t4=TransferInfShow.getMeetInf(t3, t2,t5, t);
+			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE, t1,t4);
 		} catch (ContentException e) {
 			return JsonUtil.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
 		} catch (Exception e) {
 			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 		} 
-
-		
 	}
 
 	@Override
-	public JSONObject queryTestInf(TransferInf t) {
-		QueryInf q=new QueryInf(t.getStart(),t.getEnd());
-		q.setTransfer(t.getTransfer());
-		QueryInf q1=new QueryInf(t.getStart(),t.getTransfer(),MyDate.getTomorrow(),"AUDIT");
-		QueryInf q2=new QueryInf(t.getTransfer(),t.getEnd(),MyDate.getTomorrow(),"AUDIT");
+	public JSONObject querySecondInf(TransferInf t) {
+		QueryInf q1=new QueryInf(t.getStart(),t.getEnd(),t.getDate(),"AUDIT");
 		try {
-			q.setStartCity(stationDao.getCity(q.getStart()));
-			q.setEndCity(stationDao.getCity(q.getEnd()));
-			insertDao.insertSelect(q);
 			List<Ticket> t1=ticketService.getTicketInf(q1);
-			List<Ticket> t2=ticketService.getTicketInf(q2);
-			List<Ticket> t3=TransferInfShow.getMeetInf(t1.get(0), t2, t);
-			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE, t1.get(0),t3);
+			if(t1.size()==0)
+				return JsonUtil.getJSONObject("当天无可中转的车次", Configure.DBFALSECODE);
+			QueryInf q3=new QueryInf(t.getStart(),t.getEnd(),MyDate.getDayAfter(1, t.getDate()),"AUDIT");
+			List<Ticket> t5=ticketService.getTicketInf(q3);
+			Ticket t3=new Ticket();
+			t3.setEnd(t.getStart());
+			t3.setEtime(t.getTransfer());
+			List<Ticket> t4=TransferInfShow.getMeetInf(t3, t1,t5, t);
+			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE,t4);
 		} catch (ContentException e) {
 			return JsonUtil.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
 		} catch (Exception e) {
 			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 		} 
-
 	}
+
+	
 	
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,6 +19,7 @@ import com.trainticket.bean.TransferInf;
 import com.trainticket.dao.StationDao;
 import com.trainticket.dao.UrlDao;
 import com.trainticket.exception.ContentException;
+import com.trainticket.exception.DBException;
 import com.trainticket.service.TicketService;
 import com.trainticket.util.Configure;
 import com.trainticket.util.JsonUtil;
@@ -41,22 +42,31 @@ public class TicketServiceImpl implements TicketService {
 	public JSONObject getTicket(QueryInf q) {
 	     q.setStart(stationDao.getCode(q.getStart()));
 	     q.setEnd(stationDao.getCode(q.getEnd()));
-	     JSONObject jb =urlDao.getTicket(q);
+	     JSONObject jb =null;
+	     for(int i=0;i<3;i++){
+	    	 jb=urlDao.getTicket(q);
+	    	 if(jb!=null)
+	    		 break;
+	     } 		 
 	     if(jb!=null){
 	    	 String status=jb.getString("status");
+	    	 JSONArray ja=jb.getJSONArray("messages");
 	    	 if(status.equals("false")){
 	    		 return JsonUtil.getJSONObject("请求内容有错误", Configure.CONTENTFAULTCODE);
+	    	 }
+	    	 else if(ja.size()!=0){
+	    		 return JsonUtil.getJSONObject(ja.getString(0), Configure.CONTENTFAULTCODE);
 	    	 }
 	    	 else{
 	    		 try{
 	    			 return getAllInf(setPrice(parseInf(jb,q.getDate())));
 	    		 }catch(Exception e){
-	    			 return JsonUtil.getJSONObject("请求日期不在预售期内", Configure.CONTENTFAULTCODE);
+	    			 return JsonUtil.getJSONObject("请求发生错误", Configure.CONTENTFAULTCODE);
 	    		 }
 	    	 }
 	     }
 	     else{
-	    	 return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
+	    	 return JsonUtil.getJSONObject("请求数据失败", Configure.DBFALSECODE);
 	     }
 	}
 	     
@@ -221,9 +231,18 @@ public class TicketServiceImpl implements TicketService {
 		q.setStart(stationDao.getCode(q.getStart()));
 	     q.setEnd(stationDao.getCode(q.getEnd()));
 	     JSONObject jb =urlDao.getTicket(q);
+	     for(int i=0;i<3;i++){
+	    	 jb=urlDao.getTicket(q);
+	    	 if(jb!=null)
+	    		 break;
+	     } 	
 	     if(jb!=null){
 	    	 String status=jb.getString("status");
+	    	 JSONArray ja=jb.getJSONArray("messages");
 	    	 if(status.equals("false")){
+	    		 return new ArrayList<Ticket>();
+	    	 }
+	    	 else if(ja.size()!=0){
 	    		 return new ArrayList<Ticket>();
 	    	 }
 	    	 else{
@@ -249,10 +268,19 @@ public class TicketServiceImpl implements TicketService {
 		q.setStart(stationDao.getCode(q.getStart()));
 	     q.setEnd(stationDao.getCode(q.getEnd()));
 	     JSONObject jb =urlDao.getTicket(q);
+	     for(int i=0;i<3;i++){
+	    	 jb=urlDao.getTicket(q);
+	    	 if(jb!=null)
+	    		 break;
+	     } 	
 	     if(jb!=null){
 	    	 String status=jb.getString("status");
+	    	 JSONArray ja=jb.getJSONArray("messages");
 	    	 if(status.equals("false")){
 	    		 return JsonUtil.getJSONObject("请求内容有错误", Configure.CONTENTFAULTCODE);
+	    	 }
+	    	 else if(ja.size()!=0){
+	    		 return JsonUtil.getJSONObject(ja.getString(0), Configure.CONTENTFAULTCODE);
 	    	 }
 	    	 else{
 	    		 try{

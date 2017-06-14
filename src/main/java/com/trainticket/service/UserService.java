@@ -9,7 +9,7 @@ import net.sf.json.JSONObject;
 public interface UserService {
 
 	JSONObject login(LoginUser user);
-
 	JSONObject reigster(ReigsterInf user);
 	JSONObject getPassager(String username);
+	JSONObject insertPassager(ReigsterInf user);
 }

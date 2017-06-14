@@ -16,12 +16,11 @@ import com.trainticket.exception.ContentException;
 
 @Repository("insertDao")
 public class InsertDaoImpl implements InsertDao {
-	Logger logger = LoggerFactory.getLogger(InsertDaoImpl.class);
 	
 	@Autowired
     @Qualifier("jdbcTemplate2")
     private JdbcTemplate template;
-
+	//将网络上获取的数据保存到本地数据库（不属于服务器服务范围）
 	@Override
 	public boolean insertData(List<Train> l) {
 		try{
@@ -61,8 +60,10 @@ public class InsertDaoImpl implements InsertDao {
 		return sql;
 	}
 
+	//将用户选择的中转站进行记录
 	@Override
 	public void insertSelect(QueryInf q) throws ContentException {
+		//判断是否有信息确实
 		if(q.getStart()==null||q.getTransfer()==null||q.getEnd()==null){	
 			throw new ContentException();
 		}
@@ -70,6 +71,7 @@ public class InsertDaoImpl implements InsertDao {
 			throw new ContentException();
 		}
 		try{
+			//查实插入新的中转方案，失败则说明已经存在
 			String sql ="insert into transferinf(Start,Transfer,End) values('"+q.getStartCity()+"','"+q.getTransfer()+"','"+q.getEndCity()+"')";
 			template.update(sql);
 		}catch(Exception e){
@@ -77,6 +79,7 @@ public class InsertDaoImpl implements InsertDao {
 		}
 		
 		try{
+			//将对应的方案查询数进行加1
 			String sql1="update	transferinf set Num=Num+1 where Start='"+q.getStartCity()+"' and Transfer='"+q.getTransfer()+"' and End='"+q.getEndCity()
 			+"' ";
 			template.update(sql1);

@@ -2,13 +2,20 @@ package com.trainticket.bean;
 
 import java.util.List;
 
+//查询信息汇总类
 public class QueryInf {
 
-	private String start;
-	private String end;
-	private String date;
-	private String type;
-	private String code;
+	private String start;//出发地
+	private String end;//到达地
+	private String date;//日期
+	private String type;//类型
+	private String code;//车次号
+	private String transfer;//中转站
+	private String startCity;//出发城市
+	private String endCity;//到达城市
+	private int num;//中转方案总数
+	private List<String> startStation;//出发城市关联车站
+	private List<String> endStation;//到大城市关联车站
 	public String getCode() {
 		return code;
 	}
@@ -22,9 +29,7 @@ public class QueryInf {
 		this.type = type;
 		this.code = code;
 	}
-	private String transfer;
-	private String startCity;
-	private String endCity;
+	
 	public String getStartCity() {
 		return startCity;
 	}
@@ -37,9 +42,7 @@ public class QueryInf {
 	public void setEndCity(String endCity) {
 		this.endCity = endCity;
 	}
-	private int num;
-	private List<String> startStation;
-	private List<String> endStation;
+	
 	
 	public List<String> getStartStation() {
 		return startStation;

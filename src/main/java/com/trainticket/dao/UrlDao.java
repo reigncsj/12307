@@ -10,5 +10,6 @@ public interface UrlDao {
 	JSONObject getTicket(QueryInf q);
 
 	JSONObject getTicketPrice(Ticket t);
+	String getLateInf(QueryInf q);
 
 }

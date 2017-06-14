@@ -1,10 +1,10 @@
 package com.trainticket.bean;
-
+//乘车人完整信息
 public class Passager {
-	private String Name;
-	private String Type;
-	private String Utype;
-	private String UCode;
+	private String Name;//真实姓名
+	private String Type;//票种
+	private String Utype;//证件种类
+	private String UCode;//身份证号
 	
 	public Passager() {
 	}

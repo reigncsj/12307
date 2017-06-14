@@ -1,13 +1,23 @@
 package com.trainticket.bean;
 
+//附加的订单信息
 public class Order extends OrderCommand {
-	private String orderNo;
-	private String price;
-	private String paid;
-	private String location;
-	private String startTime;
-	private String endTime;
-	private String lishi;
+	private String orderNo;//订单号
+	private String price;//票价
+	private String paid;//支付状态
+	private String location;//座位号
+	private String startTime;//出发时间
+	private String endTime;//到达时间
+	private String lishi;//历时
+	private String name;//乘车人姓名
+	
+	//以下是各种属性的构造方法
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public Order() {
 		super();
 	}

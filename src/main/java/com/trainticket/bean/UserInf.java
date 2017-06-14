@@ -1,8 +1,9 @@
 package com.trainticket.bean;
 
+//联系信息
 public class UserInf {
-	private String phone;
-	private String email;
+	private String phone;//手机
+	private String email;//邮箱
 
 	public UserInf(String phone, String email) {
 		this.phone = phone;

@@ -1,17 +1,18 @@
 package com.trainticket.bean;
 
+//列车信息
 public class Train {
 
-	private String arriveTime="";
-	private String endStationName="";
-	private String startStationName="";
-	private String startTime="";
-	private String stationName="";
-	private String stationNo="";
-	private String stationTrainCode="";
-	private String stopoverTime="";
-	private String trainClassName="";
-	private String otherCode="";
+	private String arriveTime="";//到达时间
+	private String endStationName="";//到达站
+	private String startStationName="";//出发站
+	private String startTime="";//出发时间
+	private String stationName="";//车站名称
+	private String stationNo="";//车站序号
+	private String stationTrainCode="";//列车代码
+	private String stopoverTime="";//停车时间
+	private String trainClassName="";//列车等级
+	private String otherCode="";//其它代码
 	public void setArriveTime(String s){
 		this.arriveTime=s;
 	}

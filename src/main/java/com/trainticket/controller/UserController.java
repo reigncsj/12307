@@ -20,30 +20,32 @@ public class UserController {
 	private UserService userService;
 	
 	
-	
+	//登陆路径
 	@RequestMapping(value="/login",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public Object login1(String userName,String password){
 		LoginUser user=new LoginUser(userName,password);
 		return userService.login(user).toString();
 	}
-	
-	@RequestMapping(value="/login",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
-	@ResponseBody
-	public Object login(@ModelAttribute("login")LoginUser user){
-		return userService.login(user).toString();
-	}
 
-	@RequestMapping(value="/reigster",method=RequestMethod.POST,produces="text/html;charset=UTF-8")
+	//注册路径
+	@RequestMapping(value="/reigster",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
-	public Object login(@ModelAttribute("reigster")ReigsterInf inf){
-		return "";
+	public Object reigster(String username,String password,String truename,String phone,String email,String type,String idtype,String idcode){
+		return userService.reigster(new ReigsterInf(username,password,truename,phone,email,type,idtype,idcode)).toString();
 	}
 	
+	//获取常用乘车路径
 	@RequestMapping(value="/passager",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
 	@ResponseBody
 	public Object login(String username){
 		return userService.getPassager(username).toString();
 	}
 
+	//插入常用联系人路径
+	@RequestMapping(value="/insertPassager",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public Object reigster(String username,String truename,String type,String idtype,String idcode){
+		return userService.insertPassager(new ReigsterInf(username,truename,type,idtype,idcode)).toString();
+	}
 }

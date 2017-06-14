@@ -15,4 +15,5 @@ public interface OrderDao {
 	public void setOrderPaid(String no)throws DBException;
 	public List<Order> getUnPaidOrder(String name) throws DBException;
 	public List<Order> getPaidOrder(String name) throws DBException;
+	public void deleteOrder(String no,String username);
 }

@@ -1,43 +1,45 @@
 package com.trainticket.bean;
 
+//车票信息
 public class Ticket {
-	private String sw="";
-	private	String yd="";
-	private	String ed="";
-	private	String td="";
-	private	String gw="";
-	private	String rw="";
-	private	String yw="";
-	private	String rz="";
-	private	String yz="";
-	private	String wz="";
-	private	String qt="";
+	private String sw="";//商务票数
+	private	String yd="";//一等票数
+	private	String ed="";//二等票数
+	private	String td="";//特等座票数
+	private	String gw="";//高级软卧票数
+	private	String rw="";//软卧票数
+	private	String yw="";//硬卧票数
+	private	String rz="";//软座票数
+	private	String yz="";//硬座票数
+	private	String wz="";//无座票数
+	private	String qt="";//其它票数
 	
-	private String swpj="";
-	private	String ydpj="";
-	private	String edpj="";
-	private	String tdpj="";
-	private	String gwpj="";
-	private	String rwpj="";
-	private	String ywpj="";
-	private	String rzpj="";
-	private	String yzpj="";
-	private	String wzpj="";
-	private	String qtpj="";
+	private String swpj="";//商务座票价
+	private	String ydpj="";//一等票价
+	private	String edpj="";//二等票价
+	private	String tdpj="";//特等票价
+	private	String gwpj="";//高级软卧票价
+	private	String rwpj="";//软卧票价
+	private	String ywpj="";//硬卧票价
+	private	String rzpj="";//软座票价
+	private	String yzpj="";//硬座票价
+	private	String wzpj="";//无座票价
+	private	String qtpj="";//其它票价
 	
-	private String tcode="";
-	private	String code="";
-	private	String start="";
-	private	String end="";
-	private	String stime="";
-	private	String etime="";
-	private	String lishi="";
-	private	String you="";
-	private	String riqi="";
-	private	String sno="";
-	private	String eno="";
-	private String seat="";
+	private String tcode="";//列车查询码
+	private	String code="";//列车代号
+	private	String start="";//出发站
+	private	String end="";//到达站
+	private	String stime="";//出发时间
+	private	String etime="";//到达时间
+	private	String lishi="";//历时
+	private	String you="";//是否有票
+	private	String riqi="";//日期
+	private	String sno="";//出发站编号
+	private	String eno="";//到达站编号
+	private String seat="";//座位类型
 	
+	//根据请求返回信息
 	public String getInf(String content){
 		if(content.equals("sw"))
 			return sw;

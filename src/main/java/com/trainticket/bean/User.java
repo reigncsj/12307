@@ -2,13 +2,14 @@ package com.trainticket.bean;
 
 import java.util.List;
 
+//用户信息
 public class User {
-	private String userName;
+	private String userName;//账号名
 	public User(String userName) {
 		this.userName = userName;
 	}
-	private String password;
-	private String trueName;
+	private String password;//密码
+	private String trueName;//真实姓名
 	public User(){
 	}
 	public User(String userName,String Password){

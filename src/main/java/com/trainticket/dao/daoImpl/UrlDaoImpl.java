@@ -3,8 +3,10 @@ package com.trainticket.dao.daoImpl;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
@@ -130,5 +132,61 @@ public class UrlDaoImpl implements UrlDao {
 	            return true;
 	        }
 	    }
+
+	    private String transtoutf8(String q){
+			 
+			 try {
+				 //String xmString = new String(q.toString().getBytes("UTF-8"));
+				String xmString = new String(q.toString().getBytes("GBK"));  
+				return URLEncoder.encode(xmString, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}  
+			 return "";
+
+		}
+	    
+	   
+		@Override
+		public String getLateInf(QueryInf q) {
+	        StringBuffer buffer = new StringBuffer();
+	        try {
+	        	String s=transtoutf8(q.getStart());
+	        	String e=s.replaceAll("%", "-");
+	        	String url1="http://dynamic.12306.cn/mapping/kfxt/zwdcx/LCZWD/cx.jsp?"
+	        			+ "cz="+s+"&cc="+q.getCode()+"&cxlx=0&rq="+q.getDate()+"&czEn="+e+"&yzm=1234";
+	            URL url = new URL(url1);
+	            // httpЭ�鴫��
+	            HttpURLConnection httpUrlConn = (HttpURLConnection) url.openConnection();
+
+	            httpUrlConn.setDoOutput(true);
+	            httpUrlConn.setDoInput(true);
+	            httpUrlConn.setUseCaches(false);
+	            // ��������ʽ��GET/POST��
+	            httpUrlConn.setRequestMethod("GET");
+
+	            if ("GET".equalsIgnoreCase("GET"))
+	                httpUrlConn.connect();
+	            // �����ص�������ת�����ַ���
+	            InputStream inputStream = httpUrlConn.getInputStream();
+	            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "GBK");
+	            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+	            String str = null;
+	            while ((str = bufferedReader.readLine()) != null) {
+	                buffer.append(str);
+	            }
+	            bufferedReader.close();
+	            inputStreamReader.close();
+	            // �ͷ���Դ
+	            inputStream.close();
+	            inputStream = null;
+	            httpUrlConn.disconnect();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return buffer.toString();
+		}
 
 }

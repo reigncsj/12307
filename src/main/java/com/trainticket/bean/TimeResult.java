@@ -1,7 +1,8 @@
 package com.trainticket.bean;
 
+//时间间隔
 public class TimeResult {
-	private int timeBetween;
+	private int timeBetween;//分钟差距
 	public TimeResult() {
 	}
 	
@@ -22,7 +23,7 @@ public class TimeResult {
 	public void setTimeBetween(int timeBetween) {
 		this.timeBetween = timeBetween;
 	}
-	private int day;
+	private int day;//天数差距
 	
 	
 }

@@ -6,5 +6,5 @@ import net.sf.json.JSONObject;
 
 public interface TransferInfService {
 	public JSONObject queryAllInf(TransferInf q);
-	public JSONObject queryTestInf(TransferInf q);
+	public JSONObject querySecondInf(TransferInf q);
 }

@@ -71,4 +71,12 @@ public class UserServiceImpl implements UserService {
 			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
 	}
+	@Override
+	public JSONObject insertPassager(ReigsterInf user) {
+		if(user.getIdCode().equals("")||user.getUserName().equals("")||user.getTrueName().equals(""))
+			return JsonUtil.getJSONObject("乘客信息不全",Configure.DBFALSECODE);
+		if(!reigsterDao.insertPassager(user))
+			return JsonUtil.getJSONObject("添加失败",Configure.DBFALSECODE);
+		return JsonUtil.getJSONObject("添加成功",Configure.CONTENTTRUECODE);
+	}
 }

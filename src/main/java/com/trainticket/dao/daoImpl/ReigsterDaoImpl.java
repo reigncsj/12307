@@ -15,13 +15,17 @@ public class ReigsterDaoImpl implements ReigsterDao{
     @Qualifier("jdbcTemplate2")
     private JdbcTemplate template;
 
+	//判断用户名是否已经存在
 	@Override
 	public boolean userNameExist(String userName) throws DBException {
 		try{
+			//获得拥有这个用户名的个数并判断是否为0
 			String sql="select count(*) from user where UName='"+userName+"'";
 			int num=template.queryForObject(sql,Integer.class);
+			//是0说明不存在
 			if(num==0)
 				return false;
+			//是1说明存在
 			else
 				return true;
 		}catch(Exception e){
@@ -37,8 +41,7 @@ public class ReigsterDaoImpl implements ReigsterDao{
 			if(num==0)
 				return false;
 			else{
-				int uno=getUno(code);
-				String sql2="select count(*) from userinf where UNo="+uno;
+				String sql2="select count(*) from userinf where UId="+code;
 				int num1=template.queryForObject(sql2,Integer.class);
 				if(num1!=0)
 					return true;
@@ -55,9 +58,8 @@ public class ReigsterDaoImpl implements ReigsterDao{
 		try{
 			insertUser(r);
 			insertTrueUser(r);
-			int no=getUno(r.getIdCode());
-			insertUserInf(r,no);
-			insertUsual(r.getUserName(),no);
+			insertUserInf(r);
+			insertUsual(r);
 			return true;
 		}catch(Exception e){
 			throw new DBException();
@@ -65,7 +67,7 @@ public class ReigsterDaoImpl implements ReigsterDao{
 	}
 	
 	private void insertUser(ReigsterInf r) throws Exception{
-		String sql="insert into user values('"+r.getUserName()+"','"+r.getPassword()+"'";
+		String sql="insert into user values('"+r.getUserName()+"','"+r.getPassword()+"')";
 		try{
 			template.update(sql);
 		}catch(Exception e){
@@ -75,39 +77,41 @@ public class ReigsterDaoImpl implements ReigsterDao{
 	
 	private void insertTrueUser(ReigsterInf r){
 		String sql="insert into trueuserinf(Name,type,Utype,UCode) values("
-				+"'"+r.getTrueName()+"','"+r.getType()+"','"+r.getiType()+"','"+r.getIdCode()+"'";
+				+"'"+r.getTrueName()+"','"+r.getType()+"','"+r.getiType()+"','"+r.getIdCode()+"')";
 		try{
 			template.update(sql);
 		}catch(Exception e){
-			
 		}
 	}
-	private int getUno(String code) throws Exception{
+	
+	private void insertUserInf(ReigsterInf r) throws Exception{
+		String sql="insert into userinf values('"+r.getUserName()+"','"+r.getIdCode()+"','"+r.getPhone()+"','"+r.getEmail()+"')";
+		try{
+			template.update(sql);
+		}catch(Exception e){
+			throw e;
+		}
+	}
+	
+	private void insertUsual(ReigsterInf r) throws Exception{
+		String sql="insert into usual(UName,UNo) values('"+r.getUserName()+"',"+r.getIdCode()+")";
+		try{
+			template.update(sql);
+		}catch(Exception e){
+		}
+	}
 
-		String sql="select UNo from trueuserinf where UCode='"+code+"'";
+	@Override
+	public boolean insertPassager(ReigsterInf r) {
 		try{
-			int i=template.queryForObject(sql,Integer.class);
-			return i;
+			String sql="select count(*) from trueuserinf where UCode='"+r.getIdCode()+"'";
+			int num=template.queryForObject(sql,Integer.class);
+			if(num==0)
+				insertTrueUser(r);
+			insertUsual(r);
+			return true;
 		}catch(Exception e){
-			throw e;
-		}
-	}
-	
-	private void insertUserInf(ReigsterInf r,int no) throws Exception{
-		String sql="insert into userinf values('"+r.getUserName()+"',"+no+",'"+r.getPhone()+"','"+r.getEmail()+"')";
-		try{
-			template.update(sql);
-		}catch(Exception e){
-			throw e;
-		}
-	}
-	
-	private void insertUsual(String username,int no) throws Exception{
-		String sql="insert into usual(UName,UNo) values('"+username+"',"+no+")";
-		try{
-			template.update(sql);
-		}catch(Exception e){
-			throw e;
+			return false;
 		}
 	}
 	
