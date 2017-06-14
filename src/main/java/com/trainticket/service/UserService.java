@@ -12,4 +12,5 @@ public interface UserService {
 	JSONObject reigster(ReigsterInf user);
 	JSONObject getPassager(String username);
 	JSONObject insertPassager(ReigsterInf user);
+	JSONObject deletePassager(ReigsterInf user);
 }

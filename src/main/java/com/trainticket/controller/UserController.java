@@ -48,4 +48,10 @@ public class UserController {
 	public Object reigster(String username,String truename,String type,String idtype,String idcode){
 		return userService.insertPassager(new ReigsterInf(username,truename,type,idtype,idcode)).toString();
 	}
+	
+	@RequestMapping(value="/deletePassager",method=RequestMethod.GET,produces="text/html;charset=UTF-8")
+	@ResponseBody
+	public Object deletePassager(String username,String code){
+		return userService.deletePassager(new ReigsterInf(username,code)).toString();
+	}
 }

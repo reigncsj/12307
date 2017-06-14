@@ -22,6 +22,11 @@ public class ReigsterInf {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public ReigsterInf(String userName, String idCode) {
+		this.userName = userName;
+		this.idCode = idCode;
+	}
 	public ReigsterInf(String userName, String password, String trueName, String phone, String email, String type,
 			String iType, String idCode) {
 		this.userName = userName;

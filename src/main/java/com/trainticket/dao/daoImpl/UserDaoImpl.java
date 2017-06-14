@@ -73,4 +73,24 @@ public class UserDaoImpl implements UserDao {
 			throw new DBException();
 		}
 	}
+	@Override
+	public boolean deletePassager(String username, String id) {
+		try{
+			String sql1="select UID from userinf where UName='"+username+"'";
+			String num1=template.queryForObject(sql1,String.class);
+			if(num1.equals(id))
+				return false;
+			else{
+				String sql="delete from usual where UName="+username+" and UNo="+id;
+				int num=template.update(sql);
+				if(num==1)
+					return false;
+				else 
+					return true;
+			}
+		}
+		catch(Exception e){
+			return false;
+		}
+	}
 }

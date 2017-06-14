@@ -79,4 +79,12 @@ public class UserServiceImpl implements UserService {
 			return JsonFactory.getJSONObject("添加失败",Configure.DBFALSECODE);
 		return JsonFactory.getJSONObject("添加成功",Configure.CONTENTTRUECODE);
 	}
+	@Override
+	public JSONObject deletePassager(ReigsterInf user) {
+		if(userDao.deletePassager(user.getUserName(), user.getIdCode()))
+			return JsonFactory.getJSONObject("删除成功",Configure.CONTENTTRUECODE);
+		else
+			return JsonFactory.getJSONObject("删除失败",Configure.DBFALSECODE);
+			
+	}
 }

@@ -9,6 +9,7 @@ import com.trainticket.model.User;
 
 public interface UserDao {
 	public boolean login(LoginUser user);
+	public boolean deletePassager(String username,String id);
 	public String getTrueName(String no) throws DBException;
 	public String getPassagerId(String name) throws DBException;
 	public List<Passager> getUsual(String username)  throws DBException;
