@@ -1,4 +1,4 @@
-package com.trainticket.bean;
+package com.trainticket.model;
 
 //中转条件汇总
 public class TransferInf {

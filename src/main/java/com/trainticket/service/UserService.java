@@ -1,8 +1,8 @@
 package com.trainticket.service;
 
-import com.trainticket.bean.LoginUser;
-import com.trainticket.bean.ReigsterInf;
-import com.trainticket.bean.User;
+import com.trainticket.model.LoginUser;
+import com.trainticket.model.ReigsterInf;
+import com.trainticket.model.User;
 
 import net.sf.json.JSONObject;
 

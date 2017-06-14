@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.trainticket.dao.StationDao;
 import com.trainticket.service.StationService;
 import com.trainticket.util.Configure;
-import com.trainticket.util.JsonUtil;
+import com.trainticket.util.JsonFactory;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -29,9 +29,9 @@ public class StationServiceImpl implements StationService {
 			for(int i=1;i<=al.size();i++){
 				array.add(al.get(i-1));
 			}
-			return JsonUtil.getJSONObject(array,Configure.DBTURECODE);
+			return JsonFactory.getJSONObject(array,Configure.DBTURECODE);
 		}catch(Exception e){
-			return JsonUtil.getJSONObject(array,Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject(array,Configure.DBFALSECODE);
 		}
 	}
 
@@ -43,9 +43,9 @@ public class StationServiceImpl implements StationService {
 			for(int i=1;i<=al.size();i++){
 				array.add(al.get(i-1));
 			}
-			return JsonUtil.getJSONObject(array,Configure.DBTURECODE);
+			return JsonFactory.getJSONObject(array,Configure.DBTURECODE);
 		}catch(Exception e){
-			return JsonUtil.getJSONObject(array,Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject(array,Configure.DBFALSECODE);
 		}
 	}
 }

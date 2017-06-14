@@ -2,12 +2,12 @@ package com.trainticket.util;
 
 import java.util.List;
 
-import com.trainticket.bean.Ticket;
+import com.trainticket.model.Ticket;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class JsonUtil {
+public class JsonFactory {
 	public static JSONObject getJSONObject(JSONArray array,String code){
 		JSONObject ob = new JSONObject();
 		ob.put("retCode", code);

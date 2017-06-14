@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.trainticket.bean.QueryInf;
-import com.trainticket.bean.TransferInf;
+import com.trainticket.model.QueryInf;
+import com.trainticket.model.TransferInf;
 import com.trainticket.service.TrainInfService;
 import com.trainticket.service.TransferInfService;
 import com.trainticket.util.Configure;

@@ -1,4 +1,4 @@
-package com.trainticket.bean;
+package com.trainticket.model;
 
 //列车信息
 public class Train {

@@ -2,7 +2,7 @@ package com.trainticket.service;
 
 import java.util.List;
 
-import com.trainticket.bean.Train;
+import com.trainticket.model.Train;
 
 import net.sf.json.JSONObject;
 

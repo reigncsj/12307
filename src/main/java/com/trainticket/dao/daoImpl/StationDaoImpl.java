@@ -10,13 +10,15 @@ import org.springframework.stereotype.Repository;
 import com.trainticket.dao.StationDao;
 import com.trainticket.exception.DBException;
 
+//是用来获取与车站相关的信息
 @Repository("stationDao")
 public class StationDaoImpl implements StationDao {
-	
+	//数据库相关的类
 	@Autowired
     @Qualifier("jdbcTemplate2")
     private JdbcTemplate template;
 
+	//按照车站前缀获得类似的车站
 	@Override
 	public List<String> getStationByName(String station) throws DBException {
 		try{
@@ -26,7 +28,7 @@ public class StationDaoImpl implements StationDao {
 			throw new DBException();
 		}
 	}
-	
+	//按照车站拼音缩写获得相应的车站
 	@Override
 	public List<String> getStationByPy(String station) throws DBException {
 		try{
@@ -37,6 +39,7 @@ public class StationDaoImpl implements StationDao {
 		}
 	}
 
+	//获得车战对应的查询码
 	@Override
 	public String getCode(String tname) {
 		try{
@@ -47,7 +50,7 @@ public class StationDaoImpl implements StationDao {
 			return "";
 		}
 	}
-	
+	//听过查询码获得相应的车站名
 	@Override
 	public String getNameByCode(String code) {
 		try{
@@ -59,6 +62,7 @@ public class StationDaoImpl implements StationDao {
 		}
 	}
 
+	//获得相同城市里所有的车站
 	@Override
 	public List<String> getCommonCityStation(String tname) {
 		try{
@@ -71,6 +75,7 @@ public class StationDaoImpl implements StationDao {
 		}
 	}
 
+	//获得车站所在的城市
 	@Override
 	public String getCity(String tname) {
 		try{
@@ -81,9 +86,4 @@ public class StationDaoImpl implements StationDao {
 			return tname;
 		}
 	}
-	
-	
-	
-	
-
 }

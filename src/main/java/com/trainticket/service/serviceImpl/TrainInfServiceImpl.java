@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.trainticket.bean.QueryInf;
 import com.trainticket.dao.UrlDao;
+import com.trainticket.model.QueryInf;
 import com.trainticket.service.TrainInfService;
 import com.trainticket.util.Configure;
-import com.trainticket.util.JsonUtil;
+import com.trainticket.util.JsonFactory;
 
 import net.sf.json.JSONObject;
 
@@ -21,7 +21,7 @@ public class TrainInfServiceImpl implements TrainInfService {
 	@Override
 	public JSONObject getLateInf(QueryInf q) {
 		// TODO Auto-generated method stub
-		return JsonUtil.getJSONObject(urlDao.getLateInf(q), Configure.CONTENTTRUECODE);
+		return JsonFactory.getJSONObject(urlDao.getLateInf(q), Configure.CONTENTTRUECODE);
 	}
 
 }

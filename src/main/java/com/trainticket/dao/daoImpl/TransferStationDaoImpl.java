@@ -7,15 +7,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.trainticket.bean.QueryInf;
 import com.trainticket.dao.TransferStationDao;
 import com.trainticket.exception.DBException;
+import com.trainticket.model.QueryInf;
+
+//获得与中转车站相关的车站信息
 @Repository("transferStationDao")
 public class TransferStationDaoImpl implements TransferStationDao {
 	@Autowired
     @Qualifier("jdbcTemplate2")
     private JdbcTemplate template;
 
+	//获得所有存在的中转车站
 	@Override
 	public List<String> queryTransferStation(QueryInf q) throws DBException {
 		try{
@@ -24,7 +27,7 @@ public class TransferStationDaoImpl implements TransferStationDao {
 			throw new DBException();
 		}
 	}
-	
+	//获得相应的sql语句
 	private String getSql(QueryInf q){
 		String sql="select b1.TName from ";
 		if(q.getStartStation()==null){
@@ -69,6 +72,7 @@ public class TransferStationDaoImpl implements TransferStationDao {
 		return sql;
 	}
 
+	//获得所有存在的中转车站
 	@Override
 	public List<String> queryAllTransferStation(QueryInf q) throws DBException {
 		try{
@@ -78,6 +82,7 @@ public class TransferStationDaoImpl implements TransferStationDao {
 		}
 	}
 
+	//获得通过用户经验推荐的中转车站
 	@Override
 	public List<String> queryUsualTransferStation(QueryInf q) throws DBException {
 		try{
@@ -87,6 +92,7 @@ public class TransferStationDaoImpl implements TransferStationDao {
 		}
 	}
 
+	//获取相应的sql语句
 	private String getSql1(QueryInf q) {
 		return "select Transfer from TransferInf where Start='"+q.getStartCity()+"' and End='"+q.getEndCity()+"' Order by Num desc limit 0,"+q.getNum();
 	}

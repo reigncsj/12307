@@ -2,7 +2,7 @@ package com.trainticket.util;
 
 import java.util.List;
 
-import com.trainticket.bean.Ticket;
+import com.trainticket.model.Ticket;
 
 public class Sort {
 	int num=0;

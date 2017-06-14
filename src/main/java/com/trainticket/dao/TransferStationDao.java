@@ -2,8 +2,8 @@ package com.trainticket.dao;
 
 import java.util.List;
 
-import com.trainticket.bean.QueryInf;
 import com.trainticket.exception.DBException;
+import com.trainticket.model.QueryInf;
 
 public interface TransferStationDao {
 	public List<String> queryTransferStation(QueryInf q) throws DBException;

@@ -1,4 +1,4 @@
-package com.trainticket.bean;
+package com.trainticket.model;
 
 //订单请求类，用于储存发送过来的订单信息
 public class OrderCommand {

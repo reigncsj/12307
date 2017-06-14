@@ -11,10 +11,10 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.jdbc.support.rowset.SqlRowSetMetaData;
 import org.springframework.stereotype.Repository;
 
-import com.trainticket.bean.Order;
-import com.trainticket.bean.Passager;
 import com.trainticket.dao.OrderDao;
 import com.trainticket.exception.DBException;
+import com.trainticket.model.Order;
+import com.trainticket.model.Passager;
 
 @Repository("orderDao")
 //对订单表进行的操作

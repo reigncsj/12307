@@ -1,4 +1,4 @@
-package com.trainticket.bean;
+package com.trainticket.model;
 
 //附加的订单信息
 public class Order extends OrderCommand {

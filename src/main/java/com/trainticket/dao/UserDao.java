@@ -2,10 +2,10 @@ package com.trainticket.dao;
 
 import java.util.List;
 
-import com.trainticket.bean.LoginUser;
-import com.trainticket.bean.Passager;
-import com.trainticket.bean.User;
 import com.trainticket.exception.DBException;
+import com.trainticket.model.LoginUser;
+import com.trainticket.model.Passager;
+import com.trainticket.model.User;
 
 public interface UserDao {
 	public boolean login(LoginUser user);

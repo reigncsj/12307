@@ -1,7 +1,7 @@
 package com.trainticket.dao;
 
-import com.trainticket.bean.ReigsterInf;
 import com.trainticket.exception.DBException;
+import com.trainticket.model.ReigsterInf;
 
 public interface ReigsterDao {
 	public boolean userNameExist(String userName) throws DBException;

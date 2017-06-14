@@ -1,4 +1,4 @@
-package com.trainticket.bean;
+package com.trainticket.model;
 
 //联系信息
 public class UserInf {

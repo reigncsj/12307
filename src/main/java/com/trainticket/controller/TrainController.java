@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.trainticket.bean.QueryInf;
+import com.trainticket.model.QueryInf;
 import com.trainticket.service.ApiService;
 import com.trainticket.service.ParseDataService;
 import com.trainticket.service.StationService;

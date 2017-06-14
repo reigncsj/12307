@@ -9,25 +9,28 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.trainticket.bean.LoginUser;
-import com.trainticket.bean.Order;
-import com.trainticket.bean.Passager;
-import com.trainticket.bean.User;
 import com.trainticket.dao.UserDao;
 import com.trainticket.exception.DBException;
+import com.trainticket.model.LoginUser;
+import com.trainticket.model.Order;
+import com.trainticket.model.Passager;
+import com.trainticket.model.User;
 
+//与用户信息相关的数据库操作
 @Repository("userDao")
 public class UserDaoImpl implements UserDao {
 	@Autowired
     @Qualifier("jdbcTemplate2")
     private JdbcTemplate template;
 
+	//登陆操作 
 	@Override
 	public boolean login(LoginUser user) {
 		boolean result=false;
 		try{
 			String sql="select count(*) from user where UName='"+user.getUserName()+"'and UPassword='"+user.getPassword()+"'";
 			int num=template.queryForObject(sql,Integer.class);
+			//判断账户信息是否正确
 			if(num==0)
 				return result;
 			else
@@ -36,7 +39,7 @@ public class UserDaoImpl implements UserDao {
 			return result;
 		}
 	}
-
+	//获得用户的身份证号
 	@Override
 	public String getPassagerId(String name) throws DBException {
 		try{
@@ -47,7 +50,7 @@ public class UserDaoImpl implements UserDao {
 			throw new DBException();
 		}
 	}
-
+	//获取乘车人真实姓名
 	@Override
 	public String getTrueName(String no) throws DBException{
 		try{
@@ -58,6 +61,7 @@ public class UserDaoImpl implements UserDao {
 			throw new DBException();
 		}
 	}
+	//获取账户下对应的所有常用乘车人
 	@Override
 	public List<Passager> getUsual(String username) throws DBException {
 		// TODO Auto-generated method stub

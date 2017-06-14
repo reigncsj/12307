@@ -2,10 +2,10 @@ package com.trainticket.service;
 
 import java.util.List;
 
-import com.trainticket.bean.QueryInf;
-import com.trainticket.bean.Ticket;
-import com.trainticket.bean.TransferInf;
 import com.trainticket.exception.ContentException;
+import com.trainticket.model.QueryInf;
+import com.trainticket.model.Ticket;
+import com.trainticket.model.TransferInf;
 
 import net.sf.json.JSONObject;
 

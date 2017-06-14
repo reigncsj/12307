@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.trainticket.bean.OrderCommand;
+import com.trainticket.model.OrderCommand;
 import com.trainticket.service.OrderService;
 import com.trainticket.util.MyDate;
 

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.trainticket.bean.LoginUser;
-import com.trainticket.bean.ReigsterInf;
+import com.trainticket.model.LoginUser;
+import com.trainticket.model.ReigsterInf;
 import com.trainticket.service.UserService;
 
 @Controller

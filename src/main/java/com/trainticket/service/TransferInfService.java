@@ -1,6 +1,6 @@
 package com.trainticket.service;
 
-import com.trainticket.bean.TransferInf;
+import com.trainticket.model.TransferInf;
 
 import net.sf.json.JSONObject;
 

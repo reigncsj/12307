@@ -1,4 +1,4 @@
-package com.trainticket.bean;
+package com.trainticket.model;
 
 //用来接收登录请求信息
 public class LoginUser {

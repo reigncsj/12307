@@ -1,4 +1,4 @@
-package com.trainticket.bean;
+package com.trainticket.model;
 
 //注册信息汇总
 public class ReigsterInf {

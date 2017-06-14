@@ -1,6 +1,6 @@
 package com.trainticket.service;
 
-import com.trainticket.bean.QueryInf;
+import com.trainticket.model.QueryInf;
 
 import net.sf.json.JSONObject;
 

@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.trainticket.bean.QueryInf;
 import com.trainticket.dao.StationDao;
 import com.trainticket.dao.TransferStationDao;
 import com.trainticket.exception.DBException;
+import com.trainticket.model.QueryInf;
 import com.trainticket.service.TransferService;
 import com.trainticket.util.Configure;
-import com.trainticket.util.JsonUtil;
+import com.trainticket.util.JsonFactory;
 
 import net.sf.json.JSONObject;
 
@@ -28,36 +28,36 @@ public class TransferServiceImpl implements TransferService {
 	@Override
 	public JSONObject querySomeTransferStation(QueryInf q) {
 		if(q.getStart().equals(q.getEnd())){
-			return JsonUtil.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
+			return JsonFactory.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
 		}
 		setCityInf(q);
 		setCityStationInf(q);
 		if(isCommonCity(q)){
-			return JsonUtil.getJSONObject("车站所在城市相同，中转不给予考虑", Configure.CITYSAMECODE);
+			return JsonFactory.getJSONObject("车站所在城市相同，中转不给予考虑", Configure.CITYSAMECODE);
 		}
 		try {
 			List<String> l=transferStationDao.queryTransferStation(q);
-			return JsonUtil.getJSONObject(Configure.DBTURECODE,l);
+			return JsonFactory.getJSONObject(Configure.DBTURECODE,l);
 		} catch (DBException e) {
-			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 		}
 	}
 
 	@Override
 	public JSONObject queryAllTransferStation(QueryInf q) {
 		if(q.getStart().equals(q.getEnd())){
-			return JsonUtil.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
+			return JsonFactory.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
 		}
 		setCityInf(q);
 		setCityStationInf(q);
 		if(isCommonCity(q)){
-			return JsonUtil.getJSONObject("车站所在城市相同，中转不给予考虑", Configure.CITYSAMECODE);
+			return JsonFactory.getJSONObject("车站所在城市相同，中转不给予考虑", Configure.CITYSAMECODE);
 		}
 		try {
 			List<String> l=transferStationDao.queryAllTransferStation(q);
-			return JsonUtil.getJSONObject(Configure.DBTURECODE,l);
+			return JsonFactory.getJSONObject(Configure.DBTURECODE,l);
 		} catch (DBException e) {
-			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 		}
 	}
 	
@@ -77,17 +77,17 @@ public class TransferServiceImpl implements TransferService {
 	@Override
 	public JSONObject queryUsualTransferStation(QueryInf q) {
 		if(q.getStart().equals(q.getEnd())){
-			return JsonUtil.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
+			return JsonFactory.getJSONObject("请求内容有误", Configure.CONTENTFAULTCODE);
 		}
 		setCityInf(q);
 		if(isCommonCity(q)){
-			return JsonUtil.getJSONObject("车站所在城市相同，中转不给予考虑", Configure.CITYSAMECODE);
+			return JsonFactory.getJSONObject("车站所在城市相同，中转不给予考虑", Configure.CITYSAMECODE);
 		}
 		try {
 			List<String> l=transferStationDao.queryUsualTransferStation(q);
-			return JsonUtil.getJSONObject(Configure.DBTURECODE,l);
+			return JsonFactory.getJSONObject(Configure.DBTURECODE,l);
 		} catch (DBException e) {
-			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 		}
 	}
 	

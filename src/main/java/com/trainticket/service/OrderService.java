@@ -1,6 +1,6 @@
 package com.trainticket.service;
 
-import com.trainticket.bean.OrderCommand;
+import com.trainticket.model.OrderCommand;
 
 import net.sf.json.JSONObject;
 

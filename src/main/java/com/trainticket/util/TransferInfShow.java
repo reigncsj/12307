@@ -3,9 +3,9 @@ package com.trainticket.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.trainticket.bean.Ticket;
-import com.trainticket.bean.TimeResult;
-import com.trainticket.bean.TransferInf;
+import com.trainticket.model.Ticket;
+import com.trainticket.model.TimeResult;
+import com.trainticket.model.TransferInf;
 
 public class TransferInfShow {
     public static List<Ticket> getMeetInf(Ticket t, List<Ticket> result,List<Ticket> result2, TransferInf ti){

@@ -1,7 +1,7 @@
 package com.trainticket.dao;
 
-import com.trainticket.bean.QueryInf;
-import com.trainticket.bean.Ticket;
+import com.trainticket.model.QueryInf;
+import com.trainticket.model.Ticket;
 
 import net.sf.json.JSONObject;
 

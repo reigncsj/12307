@@ -2,9 +2,9 @@ package com.trainticket.dao;
 
 import java.util.List;
 
-import com.trainticket.bean.QueryInf;
-import com.trainticket.bean.Train;
 import com.trainticket.exception.ContentException;
+import com.trainticket.model.QueryInf;
+import com.trainticket.model.Train;
 
 public interface InsertDao {
 	public boolean insertData(List<Train> l);

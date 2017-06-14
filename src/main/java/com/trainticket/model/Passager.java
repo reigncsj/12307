@@ -1,4 +1,4 @@
-package com.trainticket.bean;
+package com.trainticket.model;
 //乘车人完整信息
 public class Passager {
 	private String Name;//真实姓名

@@ -6,8 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.trainticket.bean.Ticket;
-import com.trainticket.bean.TimeResult;
+import com.trainticket.model.Ticket;
+import com.trainticket.model.TimeResult;
 
 public class MyDate {
 

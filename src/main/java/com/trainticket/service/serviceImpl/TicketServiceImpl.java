@@ -13,16 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.trainticket.bean.QueryInf;
-import com.trainticket.bean.Ticket;
-import com.trainticket.bean.TransferInf;
 import com.trainticket.dao.StationDao;
 import com.trainticket.dao.UrlDao;
 import com.trainticket.exception.ContentException;
 import com.trainticket.exception.DBException;
+import com.trainticket.model.QueryInf;
+import com.trainticket.model.Ticket;
+import com.trainticket.model.TransferInf;
 import com.trainticket.service.TicketService;
 import com.trainticket.util.Configure;
-import com.trainticket.util.JsonUtil;
+import com.trainticket.util.JsonFactory;
 import com.trainticket.util.MyDate;
 
 import net.sf.json.JSONArray;
@@ -52,21 +52,21 @@ public class TicketServiceImpl implements TicketService {
 	    	 String status=jb.getString("status");
 	    	 JSONArray ja=jb.getJSONArray("messages");
 	    	 if(status.equals("false")){
-	    		 return JsonUtil.getJSONObject("请求内容有错误", Configure.CONTENTFAULTCODE);
+	    		 return JsonFactory.getJSONObject("请求内容有错误", Configure.CONTENTFAULTCODE);
 	    	 }
 	    	 else if(ja.size()!=0){
-	    		 return JsonUtil.getJSONObject(ja.getString(0), Configure.CONTENTFAULTCODE);
+	    		 return JsonFactory.getJSONObject(ja.getString(0), Configure.CONTENTFAULTCODE);
 	    	 }
 	    	 else{
 	    		 try{
 	    			 return getAllInf(setPrice(parseInf(jb,q.getDate())));
 	    		 }catch(Exception e){
-	    			 return JsonUtil.getJSONObject("请求发生错误", Configure.CONTENTFAULTCODE);
+	    			 return JsonFactory.getJSONObject("请求发生错误", Configure.CONTENTFAULTCODE);
 	    		 }
 	    	 }
 	     }
 	     else{
-	    	 return JsonUtil.getJSONObject("请求数据失败", Configure.DBFALSECODE);
+	    	 return JsonFactory.getJSONObject("请求数据失败", Configure.DBFALSECODE);
 	     }
 	}
 	     
@@ -133,7 +133,7 @@ public class TicketServiceImpl implements TicketService {
 		for(int i=0;i<l.size();i++){
 			ja.add(l.get(i));
 		}
-		return JsonUtil.getJSONObject(ja, Configure.CONTENTTRUECODE);
+		return JsonFactory.getJSONObject(ja, Configure.CONTENTTRUECODE);
 	}
 	
 	private List<Ticket> getInf(List<String> data,String date1,JSONObject jo){
@@ -277,10 +277,10 @@ public class TicketServiceImpl implements TicketService {
 	    	 String status=jb.getString("status");
 	    	 JSONArray ja=jb.getJSONArray("messages");
 	    	 if(status.equals("false")){
-	    		 return JsonUtil.getJSONObject("请求内容有错误", Configure.CONTENTFAULTCODE);
+	    		 return JsonFactory.getJSONObject("请求内容有错误", Configure.CONTENTFAULTCODE);
 	    	 }
 	    	 else if(ja.size()!=0){
-	    		 return JsonUtil.getJSONObject(ja.getString(0), Configure.CONTENTFAULTCODE);
+	    		 return JsonFactory.getJSONObject(ja.getString(0), Configure.CONTENTFAULTCODE);
 	    	 }
 	    	 else{
 	    		 try{
@@ -290,17 +290,17 @@ public class TicketServiceImpl implements TicketService {
 	    				 if(t1.getCode().equals(q.getCode())){
 	    					 JSONObject bb=urlDao.getTicketPrice(t1);
 	    					 getPrice(t1,bb);
-	    					 return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE, t1);
+	    					 return JsonFactory.getJSONObject(Configure.CONTENTTRUECODE, t1);
 	    				}
 	    			 }
-	    			 return JsonUtil.getJSONObject("没有相应的信息", Configure.CONTENTFAULTCODE);
+	    			 return JsonFactory.getJSONObject("没有相应的信息", Configure.CONTENTFAULTCODE);
 	    		 }catch(Exception e){
-	    			 return JsonUtil.getJSONObject("请求日期不在预售期内", Configure.CONTENTFAULTCODE);
+	    			 return JsonFactory.getJSONObject("请求日期不在预售期内", Configure.CONTENTFAULTCODE);
 	    		 }
 	    	 }
 	     }
 	     else{
-	    	 return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
+	    	 return JsonFactory.getJSONObject("数据库发生错误，请及时反馈给我们", Configure.DBFALSECODE);
 	     }
 	}	
 }

@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.trainticket.bean.Train;
 import com.trainticket.dao.InsertDao;
 import com.trainticket.dao.StationDao;
+import com.trainticket.model.Train;
 import com.trainticket.service.ParseDataService;
 
 import net.sf.json.JSONArray;

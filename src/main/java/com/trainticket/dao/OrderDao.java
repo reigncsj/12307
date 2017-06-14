@@ -2,9 +2,9 @@ package com.trainticket.dao;
 
 import java.util.List;
 
-import com.trainticket.bean.Order;
-import com.trainticket.bean.Passager;
 import com.trainticket.exception.DBException;
+import com.trainticket.model.Order;
+import com.trainticket.model.Passager;
 
 import net.sf.json.JSONObject;
 

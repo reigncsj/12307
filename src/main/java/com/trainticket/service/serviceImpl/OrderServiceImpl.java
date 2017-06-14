@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.trainticket.bean.Order;
-import com.trainticket.bean.OrderCommand;
-import com.trainticket.bean.QueryInf;
-import com.trainticket.bean.Ticket;
 import com.trainticket.dao.OrderDao;
 import com.trainticket.dao.UserDao;
 import com.trainticket.exception.ContentException;
 import com.trainticket.exception.DBException;
+import com.trainticket.model.Order;
+import com.trainticket.model.OrderCommand;
+import com.trainticket.model.QueryInf;
+import com.trainticket.model.Ticket;
 import com.trainticket.service.OrderService;
 import com.trainticket.service.TicketService;
 import com.trainticket.util.Configure;
-import com.trainticket.util.JsonUtil;
+import com.trainticket.util.JsonFactory;
 import com.trainticket.util.MyDate;
 
 import net.sf.json.JSONArray;
@@ -43,20 +43,20 @@ public class OrderServiceImpl implements OrderService{
 		try {
 			ticket = ticketService.getTicketInf(new QueryInf(order.getStart(),order.getEnd(),order.getDate()));
 		} catch (ContentException e1) {
-			return JsonUtil.getJSONObject("订单生成失败", Configure.CONTENTFAULTCODE);
+			return JsonFactory.getJSONObject("订单生成失败", Configure.CONTENTFAULTCODE);
 		}
 		Ticket t=getTicketInf(ticket,order);
 		if(t==null){
-			return JsonUtil.getJSONObject("订单生成失败", Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject("订单生成失败", Configure.DBFALSECODE);
 		}
 		else{
 			ticketService.getTicketPirce(t);
 			String content= t.getInf(order.getLtype());
 			if(content.equals("")||content.equals("无")){
-				return JsonUtil.getJSONObject("该趟车已售完", Configure.NOTICKET);
+				return JsonFactory.getJSONObject("该趟车已售完", Configure.NOTICKET);
 			}
 			if(content.equals("维护")){
-				return JsonUtil.getJSONObject("系统维护中", Configure.DBFALSECODE);
+				return JsonFactory.getJSONObject("系统维护中", Configure.DBFALSECODE);
 			}
 			else{
 				String location=buildLocation(order);
@@ -77,7 +77,7 @@ public class OrderServiceImpl implements OrderService{
 				orderInf.setEndTime(t.getEtime());
 				orderInf.setLishi(t.getLishi());
 				if(orderInf.getPrice().equals(""))
-					return JsonUtil.getJSONObject("服务器忙，请稍后再试", Configure.DBFALSECODE);
+					return JsonFactory.getJSONObject("服务器忙，请稍后再试", Configure.DBFALSECODE);
 				try {
 					orderInf.setName(userDao.getTrueName(orderInf.getUcode()));
 				} catch (DBException e1) {
@@ -85,9 +85,9 @@ public class OrderServiceImpl implements OrderService{
 				try {
 					orderDao.insertOrder(orderInf);
 				} catch (DBException e) {
-					return JsonUtil.getJSONObject("订单生成失败", Configure.DBFALSECODE);
+					return JsonFactory.getJSONObject("订单生成失败", Configure.DBFALSECODE);
 				}
-				return JsonUtil.getJSONObject(Configure.GETTICKET,orderInf);
+				return JsonFactory.getJSONObject(Configure.GETTICKET,orderInf);
 			}
 		}
 	}
@@ -95,20 +95,20 @@ public class OrderServiceImpl implements OrderService{
 	public JSONObject buildOrder(OrderCommand order, OrderCommand order2) {
 		JSONObject jb=buildOrder(order);
 		if(!jb.getString("retCode").equals("1"))
-			return JsonUtil.getJSONObject("订单生成失败", Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject("订单生成失败", Configure.DBFALSECODE);
 		else{
 			JSONObject content=jb.getJSONObject("result");
 			JSONObject jb2=buildOrder(order2);
 			if(!jb2.getString("retCode").equals("1")){
 				orderDao.deleteOrder(content.getString("orderNo"), content.getString("username"));
-				return JsonUtil.getJSONObject("订单生成失败", Configure.DBFALSECODE);
+				return JsonFactory.getJSONObject("订单生成失败", Configure.DBFALSECODE);
 			}
 			else{
 				JSONObject content2=jb2.getJSONObject("result");
 				JSONArray ja=new JSONArray();
 				ja.add(content);
 				ja.add(content2);
-				return JsonUtil.getJSONObject(Configure.GETTICKET,ja);
+				return JsonFactory.getJSONObject(Configure.GETTICKET,ja);
 			}
 		}
 	}
@@ -167,45 +167,45 @@ public class OrderServiceImpl implements OrderService{
 
 		try{
 			orderDao.setOrderPaid(no);
-			return JsonUtil.getJSONObject("",Configure.PAYOK);
+			return JsonFactory.getJSONObject("",Configure.PAYOK);
 		}catch(Exception e){
-			return JsonUtil.getJSONObject("",Configure.PAYfALSE);
+			return JsonFactory.getJSONObject("",Configure.PAYfALSE);
 		}
 	}
 
 	@Override
 	public JSONObject getOrderByName(String username) {
 		try{
-			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getOrderByName(username));
+			return JsonFactory.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getOrderByName(username));
 		}catch(Exception e){
-			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
 	}
 
 	@Override
 	public JSONObject getOrderByNo(String no) {
 		try{
-			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getOrderByNo(no));
+			return JsonFactory.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getOrderByNo(no));
 		}catch(Exception e){
-			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
 	}
 
 	@Override
 	public JSONObject getUnPaidOrder(String name) {
 		try{
-			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getUnPaidOrder(name));
+			return JsonFactory.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getUnPaidOrder(name));
 		}catch(Exception e){
-			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
 	}
 
 	@Override
 	public JSONObject getPaidOrder(String name) {
 		try{
-			return JsonUtil.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getPaidOrder(name));
+			return JsonFactory.getJSONObject(Configure.CONTENTTRUECODE,orderDao.getPaidOrder(name));
 		}catch(Exception e){
-			return JsonUtil.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
+			return JsonFactory.getJSONObject("数据库发生错误，请及时反馈给我们",Configure.DBFALSECODE);
 		}
 	}
 

@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.trainticket.bean.QueryInf;
-import com.trainticket.bean.Train;
 import com.trainticket.dao.InsertDao;
 import com.trainticket.exception.ContentException;
+import com.trainticket.model.QueryInf;
+import com.trainticket.model.Train;
 
 @Repository("insertDao")
 public class InsertDaoImpl implements InsertDao {
